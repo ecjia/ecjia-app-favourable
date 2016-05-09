@@ -83,9 +83,9 @@
 						<!-- {/foreach} -->
 			            </tbody>
 			         </table>
+			         <!-- {$favourable_list.page} -->
 		         </div>
 	         </form>
          </div>
 	</div>
-	<!-- {$favourable_list.page} -->
 <!-- {/block} -->

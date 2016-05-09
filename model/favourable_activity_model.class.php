@@ -1,5 +1,5 @@
 <?php
-defined('IN_ROYALCMS') or exit('No permission resources.');
+defined('IN_ECJIA') or exit('No permission resources.');
 
 class favourable_activity_model extends Component_Model_Model {
 	public $table_name = '';
@@ -41,13 +41,15 @@ class favourable_activity_model extends Component_Model_Model {
 			$where['end_time'] = array('elt' => $now);
 		}
 		
-		//加载分页类
-		RC_Loader::load_sys_class('ecjia_page', false);
+		/* 排序*/
+		$filter['sort_by']    = empty($filter['sort_by']) ? 'act_id' : trim($filter['sort_by']);
+		$filter['sort_order'] = empty($filter['sort_order']) ? 'DESC' : trim($filter['sort_order']);
+		
 		$count = $this->where($where)->count();
 		//实例化分页
 		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
 		
-		$res = $this->where($where)->order('sort_order asc')->limit($page_row->limit())->select();
+		$res = $this->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page_row->limit())->select();
 		
 		$list = array();
 		if (!empty($res)) {
@@ -96,7 +98,13 @@ class favourable_activity_model extends Component_Model_Model {
 					$act_range_ext = RC_Model::Model('goods/category_model')->field('cat_id AS id, cat_name AS name')->in(array('cat_id'=>$favourable['act_range_ext']))->select();
 					
 				} elseif ($favourable['act_range'] == FAR_BRAND) {
-					$act_range_ext = RC_Model::Model('goods/brand_model')->field('brand_id AS id, brand_name AS name')->in(array('brand_id'=>$favourable['act_range_ext']))->select();
+					/* 区分入驻商及平台*/
+					if (!isset($_SESSION['ru_id'])) {
+						$act_range_ext = RC_Model::Model('goods/brand_model')->field('brand_id AS id, brand_name AS name')->in(array('brand_id'=>$favourable['act_range_ext']))->select();
+					} else {
+						$act_range_ext = RC_Model::Model('goods/merchants_shop_brand_viewmodel')->field('bid AS id, brandName AS name')->in(array('bid'=>$favourable['act_range_ext']))->select();
+					}
+					
 				} else {
 					$act_range_ext = RC_Model::Model('goods/goods_model')->field('goods_id AS id, goods_name AS name')->in(array('goods_id'=>$favourable['act_range_ext']))->select();
 				}
@@ -110,20 +118,15 @@ class favourable_activity_model extends Component_Model_Model {
 	/* 优惠活动管理*/
 	public function favourable_manage($parameter) 
 	{	
-		if ($parameter['act_type'] == 0) {
-			$act_type = '享受赠品（特惠品）';
-		} elseif ($parameter['act_type'] == 1) {
-			$act_type = '享受现金减免';
-		} else {
-			$act_type = '享受价格折扣';
-		}
-		
 		if (!isset($parameter['act_id'])) {
 			$act_id = $this->insert($parameter);
-			ecjia_admin::admin_log($parameter['act_name'].'，'.'优惠活动方式是 '.$act_type, 'add', 'favourable');	
 		} else {
-			$this->where(array('act_id' => $parameter['act_id']))->update($parameter);
-			ecjia_admin::admin_log($parameter['act_name'].'，'.'优惠活动方式是 '.$act_type, 'edit', 'favourable');
+			$where = array('act_id' => $parameter['act_id']);
+			/* b2b2c判断*/
+			if (isset($parameter['user_id'])) {
+				$where['user_id'] = $parameter['user_id'];
+			}
+			$this->where($where)->update($parameter);
 			$act_id = $parameter['act_id'];
 		}
 		
@@ -131,24 +134,7 @@ class favourable_activity_model extends Component_Model_Model {
 	}
 	
 	public function favourable_remove($act_id) {
-		$favourable = $this->favourable_info($act_id);
-		if (!empty($favourable)) {
-			return false;
-		}
-		
-		$name = $favourable['act_name'];
-		$act_type = $favourable['act_type'];
-		
-		if ($act_type == 0) {
-			$act_type = '享受赠品（特惠品）';
-		} elseif ($act_type == 1) {
-			$act_type = '享受现金减免';
-		} else {
-			$act_type = '享受价格折扣';
-		}
-		
 		$this->where(array('act_id' => $act_id))->delete();
-		ecjia_admin::admin_log($name.'，'.'优惠活动方式是 '.$act_type, 'remove', 'favourable');
 		return true;
 	}
 }

@@ -39,7 +39,7 @@ class list_module implements ecjia_interface {
 			$user_rank_list = $db_user_rank->field('rank_id, rank_name')->select();
 			foreach ($result['item'] as $key => $val) {
 				$rank_name = array();
-				if (isset($val['user_id'])) {
+				if (isset($val['user_id']) && $val['user_id'] > 0) {
 					$seller_info = $db_msi->field(array('CONCAT(shoprz_brandName,shopNameSuffix) as seller_name'))->find(array('user_id'));
 				}
 				

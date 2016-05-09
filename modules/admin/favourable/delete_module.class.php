@@ -18,12 +18,29 @@ class delete_module implements ecjia_interface {
 			EM_Api::outPut(101);
 		}
 		
-		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_remove($id);
-		if (is_ecjia_error($result)) {
-			return $result;
-		} else {
-			return array();
+		$favourable = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
+		if (empty($favourable)) {
+			EM_Api::outPut(13);
 		}
+		/* 多商户处理*/
+		if (isset($_SESSION['ru_id']) && $_SESSION['ru_id'] > 0 && $favourable['user_id'] != $_SESSION['ru_id']) {
+			EM_Api::outPut(8);
+		}
+		
+		$name = $favourable['act_name'];
+		$act_type = $favourable['act_type'];
+		
+		if ($act_type == 0) {
+			$act_type = '享受赠品（特惠品）';
+		} elseif ($act_type == 1) {
+			$act_type = '享受现金减免';
+		} else {
+			$act_type = '享受价格折扣';
+		}
+		
+		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_remove($id);
+		ecjia_admin::admin_log($name.'，'.'优惠活动方式是 '.$act_type, 'remove', 'favourable');
+		return array();
 	}
 }
 // end

@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-ecjia.admin.favourable_info.init();
+	ecjia.admin.favourable_info.init();
 </script>
 <!-- {/block} -->
 
@@ -16,7 +16,7 @@ ecjia.admin.favourable_info.init();
 	</h3>
 </div>
 
-<form id="form-privilege"  class="form-horizontal"  name="theForm" action="{$form_action}" method="post" data-edit-url="{url path='user/admin/edit'}" >
+<form id="form-privilege" class="form-horizontal" name="theForm" action="{$form_action}" method="post" data-edit-url="{url path='user/admin/edit'}" >
 	<fieldset>
 		<div class="row-fluid editpage-rightbar edit-page">
 			<div class="left-bar">
@@ -136,9 +136,9 @@ ecjia.admin.favourable_info.init();
 									</div>
 									<div class="m_t5 m_b5 clear">
 								        <span class="help-block">
-										{t}当优惠方式为“享受赠品（特惠品）”时，请输入允许买家选择赠品（特惠品）的最大数量，数量为0表示不限数量；
-										当优惠方式为“享受现金减免”时，请输入现金减免的金额； 
-										当优惠方式为“享受价格折扣”时，请输入折扣（1－99），如：打9折，就输入90。{/t} 
+											{t}当优惠方式为“享受赠品（特惠品）”时，请输入允许买家选择赠品（特惠品）的最大数量，数量为0表示不限数量；
+											当优惠方式为“享受现金减免”时，请输入现金减免的金额； 
+											当优惠方式为“享受价格折扣”时，请输入折扣（1－99），如：打9折，就输入90。{/t} 
 										</span>
 									</div>
 									<div class="choose_list" id="type_search"{if $favourable.act_type neq 0} style="display:none"{/if}>

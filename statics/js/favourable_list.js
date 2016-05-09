@@ -303,26 +303,13 @@
 				}
 
 				if (!exists) {
-//			    var table = $('#gift-table');
 					if ($("#gift-table").find("tr").length == 0) {
 						$("#gift-div").addClass("m_b15");
 						$("#gift-table").html("<tr align='center'><td><strong>赠品（特惠品）</strong></td><td><strong>价格</strong></td></tr>")
-//			        var row = table.insertRow(-1);
-//			        var cell = row.insertCell(-1);
-//			        cell.align = 'center';
-//			        cell.innerHTML = '<strong>赠品（特惠品）</strong>';
-//			        var cell = row.insertCell(-1);
-//			        cell.align = 'center';
-//			        cell.innerHTML = '<strong>价格</strong>';
 					}
 				    if (name.length>13) {
 				    	name = name.substr(0, 11) + "...";
 				    }
-//			    var row = table.insertRow(-1);
-//			    var cell = row.insertCell(-1);
-//			    cell.innerHTML = name;
-//			    var cell = row.insertCell(-1);
-//			    cell.align = 'right';
 				    var new_html = '<tr align="center"><td class="span7"><a href="'+ url +'" target="_blank">'+ name +'</a></td><td><input name="gift_price[]" type="text" value="0" class="w80" />' + 
 				    				 '<input name="gift_id[]" type="hidden" value="' + id + '" />' +
 				                     '<input name="gift_name[]" type="hidden" value="' + name + '" />'+
