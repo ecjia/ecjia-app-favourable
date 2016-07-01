@@ -24,25 +24,15 @@ class list_module implements ecjia_interface {
 			'page'	 => !empty($page) ? intval($page) : 1,
 		);
 		
-		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_list($filter);
+		$result = RC_Model::Model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
 		$data = array();
 		if (!empty($result['item'])) {
-			/* 判断是否是b2b2c*/
-			$result_app = ecjia_app::validate_application('seller');
-			$is_active = ecjia_app::is_active('ecjia.seller');
-			if (!is_ecjia_error($result_app) && $is_active) {
-				$db_msi = RC_Loader::load_app_model('merchants_shop_information_model', 'seller');
-			}
 			
 			/* 取得用户等级 */
 			$db_user_rank = RC_Loader::load_app_model('user_rank_model', 'user');
 			$user_rank_list = $db_user_rank->field('rank_id, rank_name')->select();
 			foreach ($result['item'] as $key => $val) {
 				$rank_name = array();
-				if (isset($val['user_id']) && $val['user_id'] > 0) {
-					$seller_info = $db_msi->field(array('CONCAT(shoprz_brandName,shopNameSuffix) as seller_name'))->find(array('user_id'));
-				}
-				
 				if (strpos(',' . $val['user_rank'] . ',', ',0,') !== false) {
 					$rank_name[] = __('非会员');
 				}
@@ -63,8 +53,8 @@ class list_module implements ecjia_interface {
 					'max_amount'	=> $val['max_amount'],
 					'formatted_start_time'	=> $val['start_time'],
 					'formatted_end_time'	=> $val['end_time'],
-					'seller_id'	=> isset($val['user_id']) ? $val['user_id'] : 0,
-					'seller_name'	=> isset($val['user_id']) ? $seller_info['seller_name'] : '', 
+					'seller_id'		=> !empty($val['seller_id']) ? $val['seller_id'] : 0,
+					'seller_name'	=> !empty($val['seller_name']) ? $val['seller_name'] : '自营', 
 				);
 			}
 		}

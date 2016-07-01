@@ -10,7 +10,7 @@ class favourable_activity_model extends Component_Model_Model {
 		parent::__construct();
 	}
 	
-/*
+	/*
 	 * 取得优惠活动列表
 	 * @param   array()     $filter     查询条件
 	 * @return   array
@@ -123,8 +123,8 @@ class favourable_activity_model extends Component_Model_Model {
 		} else {
 			$where = array('act_id' => $parameter['act_id']);
 			/* b2b2c判断*/
-			if (isset($parameter['user_id'])) {
-				$where['user_id'] = $parameter['user_id'];
+			if (isset($parameter['seller_id'])) {
+				$where['seller_id'] = $parameter['seller_id'];
 			}
 			$this->where($where)->update($parameter);
 			$act_id = $parameter['act_id'];

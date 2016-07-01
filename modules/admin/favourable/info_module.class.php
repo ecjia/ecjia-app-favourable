@@ -20,7 +20,7 @@ class info_module implements ecjia_interface {
 	
 		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
 		/* 多商户处理*/
-		if (isset($_SESSION['ru_id']) && $_SESSION['ru_id'] > 0 && $result['user_id'] != $_SESSION['ru_id']) {
+		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $result['seller_id'] != $_SESSION['seller_id']) {
 			EM_Api::outPut(8);
 		}
 		

@@ -23,7 +23,7 @@ class delete_module implements ecjia_interface {
 			EM_Api::outPut(13);
 		}
 		/* 多商户处理*/
-		if (isset($_SESSION['ru_id']) && $_SESSION['ru_id'] > 0 && $favourable['user_id'] != $_SESSION['ru_id']) {
+		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $favourable['seller_id'] != $_SESSION['seller_id']) {
 			EM_Api::outPut(8);
 		}
 		

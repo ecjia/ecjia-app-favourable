@@ -65,8 +65,8 @@ class manage_module implements ecjia_interface {
 		if ($act_id > 0) {
 			$favourable['act_id'] = $act_id;
 		}
-		if (isset($_SESSION['ru_id']) && $_SESSION['ru_id'] > 0) {
-			$favourable['user_id'] = $_SESSION['ru_id'];
+		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0) {
+			$favourable['seller_id'] = $_SESSION['seller_id'];
 		}
 		
 		if ($favourable['act_type'] == 0) {
