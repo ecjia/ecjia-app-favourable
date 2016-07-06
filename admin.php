@@ -159,9 +159,6 @@ class admin extends ecjia_admin {
 		$this->admin_priv('favourable_add', ecjia::MSGTYPE_JSON);
 			
 		$act_name = trim($_POST['act_name']);
-		if (!empty($_SESSION['ru_id'])) {
-			$this->showmessage(__('入驻商家没有操作权限，请登陆商家后台操作！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
 
 		if ($this->db_favourable_activity->where(array('act_name' => $act_name))->count() > 0) {
 			$this->showmessage('该优惠活动名称已存在，请您换一个', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -206,7 +203,8 @@ class admin extends ecjia_admin {
 			'act_type'      => intval($_POST['act_type']),
 			'act_type_ext'  => floatval($_POST['act_type_ext']),
 			'gift'          => serialize($gift),
-			'user_id'		=> 0,
+			//'user_id'		=> 0,
+			'seller_id'		=> 0,
 		);
 
 		if ($favourable['act_type'] == FAT_GOODS) {
@@ -308,10 +306,6 @@ class admin extends ecjia_admin {
 				$this->showmessage(RC_Lang::lang('act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
-
-		if (!empty($_SESSION['ru_id'])) {
-			$this->showmessage(__('入驻商家没有操作权限，请登陆商家后台操作！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
 		
 		/* 检查享受优惠的会员等级 */
 		if (!isset($_POST['user_rank'])) {
@@ -380,10 +374,6 @@ class admin extends ecjia_admin {
 	 */
 	public function remove() {
 		$this->admin_priv('favourable_delete', ecjia::MSGTYPE_JSON);
-		
-		if (!empty($_SESSION['ru_id'])) {
-			$this->showmessage(__('入驻商家没有操作权限，请登陆商家后台操作！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
 
 		$id = intval($_GET['act_id']);
 		$favourable = favourable_info($id);
@@ -409,10 +399,6 @@ class admin extends ecjia_admin {
 	 */
 	public function batch() {
 		$this->admin_priv('favourable_delete', ecjia::MSGTYPE_JSON);
-		
-		if (!empty($_SESSION['ru_id'])) {
-			$this->showmessage(__('入驻商家没有操作权限，请登陆商家后台操作！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
 		
 		$ids = $_POST['act_id'];
 		
@@ -440,10 +426,6 @@ class admin extends ecjia_admin {
 	public function edit_act_name() {
 		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 		
-		if (!empty($_SESSION['ru_id'])) {
-			$this->showmessage(__('入驻商家没有操作权限，请登陆商家后台操作！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
-		
 		$actname  = trim($_POST['value']);
 		$id		  = intval($_POST['pk']);
 		$old_actname = $this->db_favourable_activity->where(array('act_id' => $id))->get_field('act_name');
@@ -466,9 +448,6 @@ class admin extends ecjia_admin {
 	public function edit_sort_order() {
 		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 		
-		if (!empty($_SESSION['ru_id'])) {
-			$this->showmessage(__('入驻商家没有操作权限，请登陆商家后台操作！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
 		$id  = intval($_POST['pk']);
 		$val = intval($_POST['value']);
 		$data = array('sort_order' => $val);
