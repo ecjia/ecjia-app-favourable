@@ -99,7 +99,7 @@ class favourable_activity_model extends Component_Model_Model {
 					
 				} elseif ($favourable['act_range'] == FAR_BRAND) {
 					/* 区分入驻商及平台*/
-					if (!isset($_SESSION['ru_id'])) {
+					if (!isset($_SESSION['seller_id'])) {
 						$act_range_ext = RC_Model::Model('goods/brand_model')->field('brand_id AS id, brand_name AS name')->in(array('brand_id'=>$favourable['act_range_ext']))->select();
 					} else {
 						$act_range_ext = RC_Model::Model('goods/merchants_shop_brand_viewmodel')->field('bid AS id, brandName AS name')->in(array('bid'=>$favourable['act_range_ext']))->select();

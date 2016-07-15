@@ -13,10 +13,10 @@ function favourable_list() {
 	$db_favourable_activity = RC_Loader::load_app_model('favourable_activity_model', 'favourable');
 	/* 过滤条件 */
 	
-	$filter['keyword']    = empty($_REQUEST['keyword']) 	? '' 		: trim($_REQUEST['keyword']);
-	$filter['is_going']   = empty($_REQUEST['is_going']) 	? 0 		: 1;
-	$filter['sort_by']    = empty($_REQUEST['sort_by']) 	? 'act_id' 	: trim($_REQUEST['sort_by']);
-	$filter['sort_order'] = empty($_REQUEST['sort_order']) 	? 'DESC' 	: trim($_REQUEST['sort_order']);
+	$filter['keyword']    = empty($_GET['keyword']) 	? '' 		: trim($_GET['keyword']);
+	$filter['is_going']   = empty($_GET['is_going']) 	? 0 		: 1;
+	$filter['sort_by']    = empty($_GET['sort_by']) 	? 'act_id' 	: trim($_GET['sort_by']);
+	$filter['sort_order'] = empty($_GET['sort_order']) 	? 'DESC' 	: trim($_GET['sort_order']);
 	$where = array();
 	
 	if (!empty($filter['keyword'])) {
@@ -33,7 +33,7 @@ function favourable_list() {
 	
 	$page = new ecjia_page($filter['record_count'], 10, 5);
 	
-	$field = 'fa.act_id, fa.act_name, fa.user_rank, fa.start_time, fa.end_time, fa.act_range, fa.act_range_ext, fa.min_amount, fa.act_type, fa.act_type_ext, fa.gift, fa.sort_order | sort, fa.max_amount, fa.user_id, msi.shopNamesuffix,msi.shoprz_brandName';
+	$field = 'fa.act_id, fa.act_name, fa.user_rank, fa.start_time, fa.end_time, fa.act_range, fa.act_range_ext, fa.min_amount, fa.act_type, fa.act_type_ext, fa.gift, fa.sort_order | sort, fa.max_amount, fa.seller_id,ssi.shop_name';
 	$res = $db_favourable_activity_viewmodel->field($field)->where($where)->order('sort asc')->limit($page->limit())->select();
 
 	$filter['keyword'] = stripslashes($filter['keyword']);
@@ -43,7 +43,7 @@ function favourable_list() {
 		foreach ($res as $row) {
 			$row['start_time']  = RC_Time::local_date('Y-m-d H:i', $row['start_time']);
 			$row['end_time']    = RC_Time::local_date('Y-m-d H:i', $row['end_time']);
-			$row['shop_name'] 	= $row['user_id'] == 0 ? '' : $row['shoprz_brandName'].$row['shopNamesuffix'];
+			$row['shop_name'] 	= $row['seller_id'] == 0 ? '' : $row['shop_name'];
 			$list[] = $row;
 		}
 	}
