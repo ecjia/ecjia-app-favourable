@@ -19,6 +19,11 @@ class favourable_activity_model extends Component_Model_Model {
 	{	
 		/* 过滤条件 */
 		$where = array();
+		//判断是否为商家
+		if (isset($_SESSION['seller_id']) && ($_SESSION['seller_id'] > 0)) {
+			$where['seller_id'] = $_SESSION['seller_id'];
+		}
+		
 		if (!empty($filter['keyword'])) {
 			$where['act_name'] = array('like'=>"%" . mysql_like_quote($filter['keyword']) . "%");
 		}
