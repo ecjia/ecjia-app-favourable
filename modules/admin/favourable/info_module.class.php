@@ -43,7 +43,7 @@ class info_module implements ecjia_interface {
 					$db_merchants_brand_db = RC_Loader::load_app_model('merchants_shop_brand_viewmodel', 'goods');
 					
 					foreach ($result['act_range_ext'] as $key => $val) {
-						if (!isset($_SESSION['ru_id'])) {
+						if (!isset($_SESSION['seller_id'])) {
 							$image = $db_brand->where(array('brand_id' => $val['id']))->get_field('brand_logo');
 						} else {
 							$image = $db_merchants_brand_db->where(array('bid' => $val['id']))->get_field('brandLogo');
