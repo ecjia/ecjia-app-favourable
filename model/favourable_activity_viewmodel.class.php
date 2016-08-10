@@ -83,8 +83,11 @@ class favourable_activity_viewmodel extends Component_Model_View {
 	
 	/*获取商家活动列表*/
 	public function seller_activity_list($options) {
-		$res = $this->join(array('seller_shopinfo'))->where($options['where'])->field('ssi.shop_name, ssi.logo_thumb,fa.*')->limit($options['limit']->limit())->select();
-		return $res;
+		$record_count = $this->join(array('seller_shopinfo'))->where($options)->count();
+		//实例化分页
+		$page_row = new ecjia_page($record_count, 10, 5);
+		$res = $this->join(array('seller_shopinfo'))->where($options['where'])->field('ssi.shop_name, ssi.logo_thumb,fa.*')->limit($page_row->limit())->select();
+		return array('favourable_list' => $res, 'page' => $page_row);
 	}
 }
 
