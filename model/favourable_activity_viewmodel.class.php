@@ -80,6 +80,12 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		
 		return array('item' => $list, 'page' => $page_row);
 	}
+	
+	/*获取商家活动列表*/
+	public function seller_activity_list($options) {
+		$res = $this->join(array('seller_shopinfo'))->where($options['where'])->field('ssi.shop_name, ssi.logo_thumb,fa.*')->limit($options['limit']->limit())->select();
+		return $res;
+	}
 }
 
 // end
