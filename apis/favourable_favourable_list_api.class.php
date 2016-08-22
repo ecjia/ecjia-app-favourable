@@ -11,7 +11,7 @@ class favourable_favourable_list_api extends Component_Event_Api {
     	if (!is_array($options) || empty($options['location'])) {
     		return new ecjia_error('invalid_parameter', '参数无效');
     	}
-        return $this->favourable_list($options);
+        return $this->favourable_list($options['where']);
     }
     
     /**
