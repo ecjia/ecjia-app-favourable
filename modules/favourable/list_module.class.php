@@ -5,10 +5,11 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author zrl
  *
  */
-class list_module implements ecjia_interface {
+class list_module extends api_front implements api_interface {
 	
-	public function run(ecjia_api & $api) {
-		EM_Api::authSession();
+	 public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+		$this->authSession();	
+		
 		$location	 = empty($_POST['location']) ? array() : $_POST['location'] ;
 		/*经纬度为空判断*/
 		if (!is_array($location) || empty($location['longitude']) || empty($location['latitude'])) {
