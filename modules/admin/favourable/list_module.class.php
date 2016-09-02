@@ -12,7 +12,7 @@ class list_module extends api_admin implements api_interface {
 		$this->authadminSession();
 		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
 		
-		$status = _POST('status', 'coming');
+		$status = $this->requestData('status', 'coming');
 		$size = EM_Api::$pagination['count'];
 		$page = EM_Api::$pagination['page'];
 		

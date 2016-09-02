@@ -11,7 +11,7 @@ class delete_module extends api_admin implements api_interface {
     		
 		$this->authadminSession();
 		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
-		$id = _POST('act_id', 0);
+		$id = $this->requestData('act_id', 0);
 		if ($id <= 0) {
 			EM_Api::outPut(101);
 		}

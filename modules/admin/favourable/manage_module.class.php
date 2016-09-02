@@ -14,9 +14,9 @@ class manage_module extends api_admin implements api_interface {
 		
 		RC_Loader::load_app_class('favourable', 'favourable', false);
 		
-		$act_id = _POST('act_id', 0);
-		$user_rank = _POST('user_rank');
-		$gift = _POST('gift', array());
+		$act_id = $this->requestData('act_id', 0);
+		$user_rank = $this->requestData('user_rank');
+		$gift = $this->requestData('gift', array());
 		
 		if (!empty($gift)) {
 			foreach ($gift as $key => $val) {
@@ -27,16 +27,16 @@ class manage_module extends api_admin implements api_interface {
 		}
 		
 		$favourable = array(
-			'act_name'      => _POST('act_name'),
-			'start_time'    => RC_Time::local_strtotime(_POST('start_time')),
-			'end_time'      => RC_Time::local_strtotime(_POST('end_time')),
+			'act_name'      => $this->requestData('act_name'),
+			'start_time'    => RC_Time::local_strtotime($this->requestData('start_time')),
+			'end_time'      => RC_Time::local_strtotime($this->requestData('end_time')),
 			'user_rank'     => $user_rank,
-			'act_range'     => _POST('act_range'),
-			'act_range_ext' => _POST('act_range_ext'),
-			'min_amount'    => _POST('min_amount'),
-			'max_amount'    => _POST('max_amount'),
-			'act_type'      => _POST('act_type'),
-			'act_type_ext'  => _POST('act_type_ext'),
+			'act_range'     => $this->requestData('act_range'),
+			'act_range_ext' => $this->requestData('act_range_ext'),
+			'min_amount'    => $this->requestData('min_amount'),
+			'max_amount'    => $this->requestData('max_amount'),
+			'act_type'      => $this->requestData('act_type'),
+			'act_type_ext'  => $this->requestData('act_type_ext'),
 			'gift'          => serialize($gift),
 		);
 		
