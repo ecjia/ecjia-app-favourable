@@ -6,13 +6,11 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
-class delete_module implements ecjia_interface {
-	
-	public function run(ecjia_api & $api) {
-		
+class delete_module extends api_admin implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+    		
+		$this->authadminSession();
 		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
-		$ecjia->authadminSession();
-		
 		$id = _POST('act_id', 0);
 		if ($id <= 0) {
 			EM_Api::outPut(101);
