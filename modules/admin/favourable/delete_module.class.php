@@ -10,19 +10,21 @@ class delete_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
 		$this->authadminSession();
-		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
+		if ($_SESSION['admin_id'] <= 0) {
+			return new ecjia_error(100, 'Invalid session');
+		}
 		$id = $this->requestData('act_id', 0);
 		if ($id <= 0) {
-			EM_Api::outPut(101);
+			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		
 		$favourable = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
 		if (empty($favourable)) {
-			EM_Api::outPut(13);
+			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 		/* 多商户处理*/
 		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $favourable['seller_id'] != $_SESSION['seller_id']) {
-			EM_Api::outPut(8);
+			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 		
 		$name = $favourable['act_name'];

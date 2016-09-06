@@ -10,19 +10,24 @@ class info_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
 		$this->authadminSession();
-		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
+		if ($_SESSION['admin_id'] <= 0) {
+			return new ecjia_error(100, 'Invalid session');
+		}
+		
 		$id = $this->requestData('act_id', 0);
 		if ($id <= 0) {
-			EM_Api::outPut(101);
+			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
+		}
+		
+		/* 多商户处理*/
+		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $result['seller_id'] != $_SESSION['seller_id']) {
+			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 	
 		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
-		/* 多商户处理*/
-		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $result['seller_id'] != $_SESSION['seller_id']) {
-			EM_Api::outPut(8);
-		}
-		
-		if (!empty($result)) {
+		if (empty($result)) {
+			return new ecjia_error('not_exists_info', '不存在的信息');
+		} else {
 			if ($result['act_range'] == 0) {
 				$result['label_act_range'] = __('全部商品');
 			} elseif ($result['act_range'] == 1) {
@@ -39,7 +44,7 @@ class info_module extends api_admin implements api_interface {
 				if (!empty($result['act_range_ext'])) {
 					$db_brand = RC_Loader::load_app_model('brand_model', 'goods');
 					$db_merchants_brand_db = RC_Loader::load_app_model('merchants_shop_brand_viewmodel', 'goods');
-					
+						
 					foreach ($result['act_range_ext'] as $key => $val) {
 						if (!isset($_SESSION['seller_id'])) {
 							$image = $db_brand->where(array('brand_id' => $val['id']))->get_field('brand_logo');
@@ -53,7 +58,7 @@ class info_module extends api_admin implements api_interface {
 						}
 					}
 				}
-				
+			
 			} else {
 				$result['label_act_range'] = __('指定商品');
 				if (!empty($result['act_range_ext'])) {
@@ -68,7 +73,7 @@ class info_module extends api_admin implements api_interface {
 					}
 				}
 			}
-			
+				
 			$result['gift_items'] = array();
 			if ($result['act_type'] == 0) {
 				$result['label_act_type'] = __('特惠品');
@@ -96,10 +101,10 @@ class info_module extends api_admin implements api_interface {
 			} else {
 				$result['label_act_type'] = __('价格折扣');
 			}
-			
+				
 			$result['formatted_start_time'] = $result['start_time'];
 			$result['formatted_end_time'] = $result['end_time'];
-			
+				
 			/* 去除不要的字段*/
 			unset($result['start_time']);
 			unset($result['end_time']);
@@ -107,8 +112,6 @@ class info_module extends api_admin implements api_interface {
 			unset($result['user_rank']);
 			unset($result['sort_order']);
 			return $result;
-		} else {
-			EM_Api::outPut(13);
 		}
 	}
 }

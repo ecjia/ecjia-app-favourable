@@ -16,9 +16,8 @@ class list_module extends api_front implements api_interface {
 			return new ecjia_error('invalid_parameter', '参数无效');
 		}
 		
-		$page_parm = EM_Api::$pagination;
-		$page = $page_parm['page'];
-		$size = $page_parm['count'];
+		$size = $this->requestData('pagination.count', 15);
+		$page = $this->requestData('pagination.page', 1);
 		
 		$where = array();
 		$where['fa.seller_id'] = array('gt' => '0');
@@ -60,7 +59,7 @@ class list_module extends api_front implements api_interface {
 			}
 			RC_Cache::app_cache_set($cache_key, $data, 'favourable');
 		}
-		EM_Api::outPut($data['list'], $data['pager']);
+		return array('data' => $data['list'], 'pager' => $data['pager']);
 	 }	
 }
 // end

@@ -10,11 +10,13 @@ class list_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
 		$this->authadminSession();
-		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
+		if ($_SESSION['admin_id'] <= 0) {
+			return new ecjia_error(100, 'Invalid session');
+		}
 		
 		$status = $this->requestData('status', 'coming');
-		$size = EM_Api::$pagination['count'];
-		$page = EM_Api::$pagination['page'];
+		$size = $this->requestData('pagination.count', 15);
+		$page = $this->requestData('pagination.page', 1);
 		
 		
 		$filter = array(
@@ -26,7 +28,6 @@ class list_module extends api_admin implements api_interface {
 		$result = RC_Model::Model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
 		$data = array();
 		if (!empty($result['item'])) {
-			
 			/* 取得用户等级 */
 			$db_user_rank = RC_Loader::load_app_model('user_rank_model', 'user');
 			$user_rank_list = $db_user_rank->field('rank_id, rank_name')->select();
@@ -59,13 +60,11 @@ class list_module extends api_admin implements api_interface {
 		}
 		
 		$pager = array(
-				'total' => $result['page']->total_records,
-				'count' => $result['page']->total_records,
-				'more'	=> $result['page']->total_pages <= $page ? 0 : 1,
+			'total' => $result['page']->total_records,
+			'count' => $result['page']->total_records,
+			'more'	=> $result['page']->total_pages <= $page ? 0 : 1,
 		);
-		EM_Api::outPut($data, $pager);
-		
-
+		return array('data' => $data, 'pager' => $pager);
 	}
 }
 // end
