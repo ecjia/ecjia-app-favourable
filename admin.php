@@ -17,11 +17,11 @@ class admin extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_func('favourable');
-		$this->db_favourable_activity 	= RC_Loader::load_app_model('favourable_activity_model');
-		$this->db_user_rank 			= RC_Loader::load_app_model('favourable_user_rank_model');
-		$this->db_category 				= RC_Loader::load_app_model('favourable_category_model');
-		$this->db_brand 				= RC_Loader::load_app_model('favourable_brand_model');
-		$this->db_goods 				= RC_Loader::load_app_model('favourable_goods_model');
+		$this->db_favourable_activity 	= RC_Model::model('favourable/favourable_activity_model');
+		$this->db_user_rank 			= RC_Model::model('favourable/favourable_user_rank_model');
+		$this->db_category 				= RC_Model::model('favourable/favourable_category_model');
+		$this->db_brand 				= RC_Model::model('favourable/favourable_brand_model');
+		$this->db_goods 				= RC_Model::model('favourable/favourable_goods_model');
 		
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
@@ -46,7 +46,7 @@ class admin extends ecjia_admin {
 	 * 活动列表页
 	 */
 	public function init() {
-		$this->admin_priv('favourable_manage');
+		$this->admin_priv('favourable_manage', ecjia::MSGTYPE_JSON);
 	
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.favourable_list')));
@@ -75,7 +75,7 @@ class admin extends ecjia_admin {
 	 * 添加页面
 	 */
 	public function add() {
-		$this->admin_priv('favourable_add');
+		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 	
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.add_favourable')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -143,7 +143,7 @@ class admin extends ecjia_admin {
 	 * 添加处理
 	 */
 	public function insert() {
-		$this->admin_priv('favourable_add');
+		$this->admin_priv('favourable_update' ,ecjia::MSGTYPE_JSON);
 		
 		$act_name = !empty($_POST['act_name']) ? trim($_POST['act_name']) : '';
 		if ($this->db_favourable_activity->is_only(array('act_name' => $act_name)) > 0) {
@@ -219,7 +219,7 @@ class admin extends ecjia_admin {
 	 * 编辑
 	 */
 	public function edit() {
-		$this->admin_priv('favourable_update');
+		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.edit_favourable')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -255,7 +255,7 @@ class admin extends ecjia_admin {
 	 * 编辑处理
 	 */
 	public function update() { 
-		$this->admin_priv('favourable_update');
+		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 		
 		$act_name 	= !empty($_POST['act_name']) 	? trim($_POST['act_name']) : '';
 		$act_id 	= !empty($_POST['act_id']) 		? intval($_POST['act_id']) : 0;
@@ -481,7 +481,7 @@ class admin extends ecjia_admin {
 	 * 取得优惠活动列表
 	*/
 	private function get_favourable_list() {
-		$db_favourable_activity	= RC_Loader::load_app_model('favourable_activity_model');
+		$db_favourable_activity	= RC_Model::model('favourable/favourable_activity_model');
 		
 		$filter['sort_by']    	= empty($_GET['sort_by']) 	? 'act_id' 				: trim($_GET['sort_by']);
 		$filter['sort_order'] 	= empty($_GET['sort_order'])? 'DESC' 				: trim($_GET['sort_order']);
