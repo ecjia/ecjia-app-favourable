@@ -6,19 +6,20 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
-class manage_module extends api_admin implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-    		
+class manage_module extends api_admin implements api_interface
+{
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
+    {
 		$this->authadminSession();
 		if ($_SESSION['admin_id'] <= 0) {
 			return new ecjia_error(100, 'Invalid session');
 		}
-			
 		RC_Loader::load_app_class('favourable', 'favourable', false);
 		
-		$act_id = $this->requestData('act_id', 0);
-		$user_rank = $this->requestData('user_rank');
-		$gift = $this->requestData('gift', array());
+		$act_id 	= $this->requestData('act_id', 0);
+		$user_rank 	= $this->requestData('user_rank');
+		$gift 		= $this->requestData('gift', array());
+
 		$favourable = array(
 			'act_name'      => $this->requestData('act_name'),
 			'start_time'    => RC_Time::local_strtotime($this->requestData('start_time')),
@@ -57,8 +58,8 @@ class manage_module extends api_admin implements api_interface {
 		if ($act_id > 0) {
 			$favourable['act_id'] = $act_id;
 		}
-		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0) {
-			$favourable['seller_id'] = $_SESSION['seller_id'];
+		if (isset($_SESSION['ru_id']) && $_SESSION['ru_id'] > 0) {
+			$favourable['user_id'] = $_SESSION['ru_id'];
 		}
 		
 		if ($favourable['act_type'] == 0) {

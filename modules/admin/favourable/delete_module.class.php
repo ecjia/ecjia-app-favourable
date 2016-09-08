@@ -6,9 +6,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
-class delete_module extends api_admin implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-    		
+class delete_module extends api_admin implements api_interface
+{
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request)
+    {
 		$this->authadminSession();
 		if ($_SESSION['admin_id'] <= 0) {
 			return new ecjia_error(100, 'Invalid session');
@@ -23,7 +24,7 @@ class delete_module extends api_admin implements api_interface {
 			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 		/* 多商户处理*/
-		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $favourable['seller_id'] != $_SESSION['seller_id']) {
+		if (isset($_SESSION['ru_id']) && $_SESSION['ru_id'] > 0 && $favourable['user_id'] != $_SESSION['ru_id']) {
 			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 		

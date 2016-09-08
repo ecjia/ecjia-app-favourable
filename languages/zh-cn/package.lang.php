@@ -6,7 +6,7 @@
 
 defined('IN_ECJIA') or exit('No permission resources.');
 
-$LANG['favourable']            		= '优惠活动';
-$LANG['favourable_desc']       		= '不间断、多花样的优惠活动，能够吸引更多消费者对商城的关注，为商城注入更多活力，把握新用户的增长，提高老用户的忠诚，是商城日常运营不可或缺的功能。';
+$LANG['favourable']			= '优惠活动';
+$LANG['favourable_desc']	= '<span>优惠活动，主要回馈网站用户。为确保更多消费者享受到优惠，活动将分期举行。</span>';
 
 // end

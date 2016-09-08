@@ -35,7 +35,6 @@ $LANG['label_user_rank'] = '享受优惠的会员等级：';
 $LANG['not_user'] = '非会员';
 $LANG['label_act_range'] = '优惠范围：';
 $LANG['far_all'] = '全部商品';
-$LANG['merchant_name'] = '商家名称';
 $LANG['far_category'] = '以下分类';
 $LANG['far_brand'] = '以下品牌';
 $LANG['far_goods'] = '以下商品';
