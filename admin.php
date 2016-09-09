@@ -8,20 +8,12 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin extends ecjia_admin {
 	private $db_favourable_activity;
-	private $db_user_rank;
-	private $db_category;
-	private $db_brand;
-	private $db_goods;
 	
 	public function __construct() {
 		parent::__construct();
 		
 		RC_Loader::load_app_func('favourable');
 		$this->db_favourable_activity 	= RC_Model::model('favourable/favourable_activity_model');
-		$this->db_user_rank 			= RC_Model::model('favourable/favourable_user_rank_model');
-		$this->db_category 				= RC_Model::model('favourable/favourable_category_model');
-		$this->db_brand 				= RC_Model::model('favourable/favourable_brand_model');
-		$this->db_goods 				= RC_Model::model('favourable/favourable_goods_model');
 		
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
@@ -47,7 +39,7 @@ class admin extends ecjia_admin {
 	 */
 	public function init() {
 		$this->admin_priv('favourable_manage', ecjia::MSGTYPE_JSON);
-	
+		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.favourable_list')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -64,7 +56,7 @@ class admin extends ecjia_admin {
 		$this->assign('action_link', array('href' => RC_Uri::url('favourable/admin/add'), 'text' => RC_Lang::get('favourable::favourable.add_favourable')));
 		
 		$list = $this->get_favourable_list();
-		
+
 		$this->assign('favourable_list', $list);
 		$this->assign('search_action', RC_Uri::url('favourable/admin/init'));
 
@@ -113,7 +105,7 @@ class admin extends ecjia_admin {
 			'rank_name' => RC_Lang::get('favourable::favourable.not_user'),
 			'checked'   => strpos(',' . $favourable['user_rank'] . ',', ',0,') !== false
 		);
-		$data = $this->db_user_rank->user_rank_select('rank_id, rank_name');
+		$data = RC_DB::table('user_rank')->select('rank_id', 'rank_name')->get();
 
 		if (!empty($data)) {
 			foreach ($data as $key => $row) {
@@ -124,15 +116,18 @@ class admin extends ecjia_admin {
 		$this->assign('user_rank_list', $user_rank_list);
 		
 		$act_range_ext = array();
+		
 		if ($favourable['act_range'] != FAR_ALL && !empty($favourable['act_range_ext'])) {
+			$favourable['act_range_ext'] = explode(',', $favourable['act_range_ext']);
 			if ($favourable['act_range'] == FAR_CATEGORY) {
-				$act_range_ext = $this->db_category->category_select(array('cat_id' => $favourable['act_range_ext']), true, 'cat_id AS id, cat_name AS name');
+				$act_range_ext = RC_DB::table('category')->whereIn('cat_id', $favourable['act_range_ext'])->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'))->get();
 			} elseif ($favourable['act_range'] == FAR_BRAND) {
-				$act_range_ext = $this->db_brand->category_select(array('brand_id' => $favourable['act_range_ext']), true, 'brand_id AS id, brand_name AS name');
+				$act_range_ext = RC_DB::table('brand')->whereIn('brand_id', $favourable['act_range_ext'])->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'))->get();
 			} else {
-				$act_range_ext = $this->db_goods->category_select(array('goods_id' => $favourable['act_range_ext']), true, 'goods_id AS id, goods_name AS name');
+				$act_range_ext = RC_DB::table('goods')->whereIn('goods_id', $favourable['act_range_ext'])->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'))->get();
 			}
 		}
+
 		$this->assign('act_range_ext', $act_range_ext);
 		$this->assign('form_action', RC_Uri::url('favourable/admin/insert'));
 		
@@ -146,7 +141,9 @@ class admin extends ecjia_admin {
 		$this->admin_priv('favourable_update' ,ecjia::MSGTYPE_JSON);
 		
 		$act_name = !empty($_POST['act_name']) ? trim($_POST['act_name']) : '';
-		if ($this->db_favourable_activity->is_only(array('act_name' => $act_name)) > 0) {
+		
+		if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->count() > 0) {
+				
 			$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
@@ -206,13 +203,13 @@ class admin extends ecjia_admin {
 		} else {
 			$act_type = RC_Lang::get('favourable::favourable.fat_discount');
 		}
-		$result = $this->db_favourable_activity->favourable_manage($favourable);
+		$act_id = $this->db_favourable_activity->favourable_manage($favourable);
 		
 		ecjia_admin::admin_log($favourable['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'add', 'favourable');
 		$links[] = array('text' => RC_Lang::get('favourable::favourable.back_favourable_list'), 'href' => RC_Uri::url('favourable/admin/init'));
 		$links[] = array('text' => RC_Lang::get('favourable::favourable.continue_add_favourable'), 'href' => RC_Uri::url('favourable/admin/add'));
 		
-		$this->showmessage(RC_Lang::get('favourable::favourable.add_favourable_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('favourable/admin/edit', array('act_id' => $result))));
+		$this->showmessage(RC_Lang::get('favourable::favourable.add_favourable_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('favourable/admin/edit', array('act_id' => $act_id))));
 	}
 	
 	/**
@@ -238,6 +235,7 @@ class admin extends ecjia_admin {
 		
 		$id = !empty($_GET['act_id']) ? intval($_GET['act_id']) : 0;
 		$favourable = $this->db_favourable_activity->favourable_info($id);
+		
 		if (empty($favourable)) {
 			$this->showmessage(RC_Lang::get('favourable::favourable.favourable_not_exist'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
 		}
@@ -259,7 +257,8 @@ class admin extends ecjia_admin {
 		
 		$act_name 	= !empty($_POST['act_name']) 	? trim($_POST['act_name']) : '';
 		$act_id 	= !empty($_POST['act_id']) 		? intval($_POST['act_id']) : 0;
-		if ($this->db_favourable_activity->is_only(array('act_name' => $act_name, 'act_id' => array('neq' => $act_id))) > 0) {
+		
+		if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $act_id)->count() > 0) {
 			$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$start_time = !empty($_POST['start_time'])	? RC_Time::local_strtotime($_POST['start_time']) 	: '';
@@ -323,7 +322,7 @@ class admin extends ecjia_admin {
 		$this->db_favourable_activity->favourable_manage($favourable);
 		
 		ecjia_admin::admin_log($favourable['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'edit', 'favourable');
-		$this->showmessage(RC_Lang::get('favourable::favourable.edit_favourable_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('favourable/admin/edit', array('act_id' => $_POST['act_id']))));
+		$this->showmessage(RC_Lang::get('favourable::favourable.edit_favourable_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('favourable/admin/edit', array('act_id' => $act_id))));
 	}
 
 	/**
@@ -359,12 +358,13 @@ class admin extends ecjia_admin {
 	 * 批量操作
 	 */
 	public function batch() {
-		$this->admin_priv('favourable_delete');
+		$this->admin_priv('favourable_delete', ecjia::MSGTYPE_JSON);
 		
 		$ids = $_POST['act_id'];
-		$info = $this->db_favourable_activity->favourable_select(array('act_id' => $ids));
-		$this->db_favourable_activity->favourable_remove($ids, true);
-		
+		$act_ids = explode(',', $ids);
+		$info = RC_DB::table('favourable_activity')->whereIn('act_id', $act_ids)->get();
+
+		$this->db_favourable_activity->favourable_remove($act_ids, true);
 		if (!empty($info)) {
 			foreach ($info as $v) {
 				if ($v['act_type'] == 0) {
@@ -383,23 +383,21 @@ class admin extends ecjia_admin {
 	 * 编辑优惠活动名称
 	 */
 	public function edit_act_name() {
-		$this->admin_priv('favourable_update');
+		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 		
-		$actname = trim($_POST['value']);
+		$act_name = trim($_POST['value']);
 		$id	= intval($_POST['pk']);
-		$old_actname = $this->db_favourable_activity->favourable_field(array('act_id' => $id), 'act_name');
-		if (!empty($actname)) {
-			if ($actname != $old_actname) {
-				if ($this->db_favourable_activity->is_only(array('act_name' => $actname)) == 0) {
-					$data = array(
-						'act_id'	=> $id,
-						'act_name'	=> $actname
-					);
-					$this->db_favourable_activity->favourable_manage($data);
-					$this->showmessage(RC_Lang::get('favourable::favourable.edit_name_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-				} else {
-					$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-				}
+		
+		if (!empty($act_name)) {
+			if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $id)->count() == 0) {
+				$data = array(
+					'act_id'	=> $id,
+					'act_name'	=> $act_name
+				);
+				$this->db_favourable_activity->favourable_manage($data);
+				$this->showmessage(RC_Lang::get('favourable::favourable.edit_name_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+			} else {
+				$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
 			$this->showmessage(RC_Lang::get('favourable::favourable.pls_enter_name'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -419,6 +417,7 @@ class admin extends ecjia_admin {
 			'sort_order' 	=> $val
 		);
 		$this->db_favourable_activity->favourable_manage($data);
+		
 		$this->showmessage(RC_Lang::get('favourable::favourable.sort_edit_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('favourable/admin/init')) );
 	}
 	
@@ -427,6 +426,7 @@ class admin extends ecjia_admin {
 	 */
 	public function search() {
 		$this->admin_priv('favourable_manage', ecjia::MSGTYPE_JSON);
+		
 		$act_range = !empty($_POST['act_range']) ? $_POST['act_range'] : 0;
 		$keyword = !empty($_POST['keyword']) ? trim($_POST['keyword']) : '';
 		$where = array();
@@ -436,8 +436,9 @@ class admin extends ecjia_admin {
 				'name' => RC_Lang::get('favourable::favourable.all_need_not_search')
 			);
 		} elseif ($act_range == FAR_CATEGORY) {//按分类选择
+			$db_category = RC_DB::table('category')->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'));
 			if (empty($keyword)) {
-				$arr = $this->db_category->category_select(array(), false, 'cat_id AS id, cat_name AS name');
+				$arr = $db_category->get();
 				RC_Loader::load_app_func('category', 'goods');
 				$result = cat_list(0, 0, false);
 				$arr = array();
@@ -450,20 +451,24 @@ class admin extends ecjia_admin {
 					$arr = array_merge($arr);
 				}
 			} else {
-				$arr = $this->db_category->category_select(array('cat_name' => array('like' => "%".mysql_like_quote($keyword)."%")), false, 'cat_id AS id, cat_name AS name');
+				$arr = $db_category->where('cat_name', 'like', '%'.mysql_like_quote($keyword).'%')->get();
 			}
 		} elseif ($act_range == FAR_BRAND) {//按品牌选择
+			$db_brand = RC_DB::table('brand')->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'));
 			if (!empty($keyword)) {
-				$where = array('brand_name' => array('like' => "%".mysql_like_quote($keyword)."%"));
+				$db_brand->where('brand_name', 'like', '%'.mysql_like_quote($keyword).'%');
 			}
-			$arr = $this->db_brand->brand_select($where, false, 'brand_id AS id, brand_name AS name');
+			$arr = $db_brand->get();
 		} else {
+			$db_goods = RC_DB::table('goods')->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'));
 			if (!empty($keyword)) {
-				$where = array('goods_name' => array('like' => "%".mysql_like_quote($keyword)."%"));
+				$db_goods->where('goods_name', 'like', '%'.mysql_like_quote($keyword).'%');
 			}
-			$arr = $this->db_goods->goods_select($where, false, 'goods_id AS id, goods_name AS name');
+			$arr = $db_goods->get();
+
 			if (!empty($arr)) {
 				foreach ($arr as $key => $row) {
+					$arr[$key]['name'] = stripslashes($row['name']);
 					$arr[$key]['url'] = RC_Uri::url('goods/admin/preview', 'id='.$row['id']);
 				}
 			}
@@ -481,36 +486,36 @@ class admin extends ecjia_admin {
 	 * 取得优惠活动列表
 	*/
 	private function get_favourable_list() {
-		$db_favourable_activity	= RC_Model::model('favourable/favourable_activity_model');
-		
 		$filter['sort_by']    	= empty($_GET['sort_by']) 	? 'act_id' 				: trim($_GET['sort_by']);
 		$filter['sort_order'] 	= empty($_GET['sort_order'])? 'DESC' 				: trim($_GET['sort_order']);
 		$filter['keyword']		= empty($_GET['keyword']) 	? '' 					: trim($_GET['keyword']);
 		$filter['type'] 	 	= isset($_GET['type']) 		? trim($_GET['type']) 	: '';
 		
+		$db_favourable_activity = RC_DB::table('favourable_activity');
 		/* 过滤条件 */
 		$where = array();
 		if (!empty($filter['keyword'])) {
-			$where['act_name'] = array('like' => "%" . mysql_like_quote($filter['keyword']) . "%");
+			$db_favourable_activity->where('act_name', 'like', '%' . mysql_like_quote($filter['keyword']) . '%');
 		}
+		
 		$time = RC_Time::gmtime();
-	
-		$field = 'count(*) as count, SUM(IF(start_time <'.$time.' and end_time > '.$time.', 1, 0)) as on_going';
-		$type_count = $db_favourable_activity->favourable_find($where, $field);
+		$type_count = $db_favourable_activity
+			->select(RC_DB::raw('COUNT(*) as count'), RC_DB::raw('SUM(IF(start_time <'.$time.' and end_time > '.$time.', 1, 0)) as on_going'))
+			->first();
 	
 		if ($filter['type']  == 'on_going') {
-			$where['start_time'] = array('elt' => $time);
-			$where['end_time'] = array('egt' => $time);
+			$db_favourable_activity->where('start_time', '<=', $time)->where('end_time', '>=', $time);
 		}
 	
-		$count = $db_favourable_activity->where($where)->count();
+		$count = $db_favourable_activity->count();
 		$page = new ecjia_page($count, 10, 5);
-		$option = array(
-			'where' => $where,
-			'order' => array('sort_order' => 'asc', $filter['sort_by'] => $filter['sort_order']),
-			'limit'	=> $page->limit()
-		);
-		$data = $db_favourable_activity->get_favourable_list($option);
+		$data = $db_favourable_activity
+			->orderby('sort_order', 'asc')
+			->orderby($filter['sort_by'], $filter['sort_order'])
+			->select('*')
+			->take(10)
+			->skip($page->start_id-1)
+			->get();
 		
 		$list = array();
 		if (!empty($data)) {

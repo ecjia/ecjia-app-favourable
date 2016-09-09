@@ -11,11 +11,11 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		$this->table_alias_name = 'fa';
 		
 		$this->view = array(
-				'seller_shopinfo' => array(
-						'type' 	=> Component_Model_View::TYPE_LEFT_JOIN,
-						'alias' => 'ssi',
-						'on' 	=> "ssi.id = fa.seller_id"
-				)
+			'seller_shopinfo' => array(
+				'type' 	=> Component_Model_View::TYPE_LEFT_JOIN,
+				'alias' => 'ssi',
+				'on' 	=> "ssi.id = fa.seller_id"
+			)
 		);
 		parent::__construct();
 	}

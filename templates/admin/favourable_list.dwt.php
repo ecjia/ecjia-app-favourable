@@ -43,42 +43,40 @@
 	
 <div class="row-fluid">
 	<div class="span12">
-		<form method="POST" action="{$form_action}" name="listForm" data-pjax-url="{RC_Uri::url('article/admin/init')}">
-			<table class="table table-striped smpl_tbl table-hide-edit">
-				<thead>
-					<tr>
-					    <th class="table_checkbox"><input type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/></th>
-					    <th>{lang key='favourable::favourable.act_name'}</th>
-					    <th class="w150">{lang key='favourable::favourable.start_time'}</th>
-					    <th class="w150">{lang key='favourable::favourable.end_time'}</th>
-					    <th class="w200">{lang key='favourable::favourable.min_amount'}</th>
-					    <th class="w100">{lang key='favourable::favourable.max_amount'}</th>
-					    <th class="w50">{lang key='favourable::favourable.sort'}</th>
-				  	</tr>
-				</thead>
-				<!-- {foreach from=$favourable_list.item item=favourable} -->
-			    <tr>
-			      <td><span><input type="checkbox" class="checkbox" value="{$favourable.act_id}" name="checkboxes[]" ></span></td>
-			      <td class="hide-edit-area">
-			      <span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_act_name')}" data-name="act_name" data-pk="{$favourable.act_id}" data-title="{lang key='favourable::favourable.edit_act_name'}">{$favourable.act_name}</span>
-		     	  <div class="edit-list">
-					  <a class="data-pjax" href='{url path="favourable/admin/edit" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-			          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
-		    	  </div>
-			      </td>
-			      <td>{$favourable.start_time}</td>
-			      <td>{$favourable.end_time}</td>
-			      <td>{$favourable.min_amount}</td>
-			      <td>{$favourable.max_amount}</td>
-			      <td><span class="edit_sort_order cursor_pointer" data-placement="left" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_sort_order')}" data-name="sort_order" data-pk="{$favourable.act_id}"  data-title="{lang key='favourable::favourable.edit_act_sort'}">{$favourable.sort_order}</span></td>
-			    </tr>
-			    <!-- {foreachelse} -->
-		        <tr><td class="no-records" colspan="10">{lang key='system::system.no_records'}</td></tr>
-				<!-- {/foreach} -->
-	            </tbody>
-	         </table>
-	         <!-- {$favourable_list.page} -->
-	     </form>
+		<table class="table table-striped smpl_tbl table-hide-edit">
+			<thead>
+				<tr>
+				    <th class="table_checkbox"><input type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/></th>
+				    <th>{lang key='favourable::favourable.act_name'}</th>
+				    <th class="w150">{lang key='favourable::favourable.start_time'}</th>
+				    <th class="w150">{lang key='favourable::favourable.end_time'}</th>
+				    <th class="w200">{lang key='favourable::favourable.min_amount'}</th>
+				    <th class="w100">{lang key='favourable::favourable.max_amount'}</th>
+				    <th class="w50">{lang key='favourable::favourable.sort'}</th>
+			  	</tr>
+			</thead>
+			<!-- {foreach from=$favourable_list.item item=favourable} -->
+		    <tr>
+		      <td><span><input type="checkbox" class="checkbox" value="{$favourable.act_id}" name="checkboxes[]" ></span></td>
+		      <td class="hide-edit-area">
+		      <span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_act_name')}" data-name="act_name" data-pk="{$favourable.act_id}" data-title="{lang key='favourable::favourable.edit_act_name'}">{$favourable.act_name}</span>
+	     	  <div class="edit-list">
+				  <a class="data-pjax" href='{url path="favourable/admin/edit" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+		          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
+	    	  </div>
+		      </td>
+		      <td>{$favourable.start_time}</td>
+		      <td>{$favourable.end_time}</td>
+		      <td>{$favourable.min_amount}</td>
+		      <td>{$favourable.max_amount}</td>
+		      <td><span class="edit_sort_order cursor_pointer" data-placement="left" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_sort_order')}" data-name="sort_order" data-pk="{$favourable.act_id}"  data-title="{lang key='favourable::favourable.edit_act_sort'}">{$favourable.sort_order}</span></td>
+		    </tr>
+		    <!-- {foreachelse} -->
+	        <tr><td class="no-records" colspan="10">{lang key='system::system.no_records'}</td></tr>
+			<!-- {/foreach} -->
+            </tbody>
+         </table>
+         <!-- {$favourable_list.page} -->
 	</div>
 </div>
 <!-- {/block} -->

@@ -145,9 +145,9 @@
                 var $select = $('form[name="theForm"] select[name="result"]');
                 for (i = 0; i < goods.length; i++) {
                     if (goods[i].level) {
-                        tmpobj += "<option value='" + goods[i].id + "' style='padding-left:" + goods[i].level * 20 + "px'>" + goods[i].name + "</option>";
+                        tmpobj += '<option value=' + goods[i].id + ' style=padding-left:' + goods[i].level * 20 + 'px>' + goods[i].name + '</option>';
                     } else {
-                        tmpobj += "<option value='" + goods[i].id + "' >" + goods[i].name + "</option>";
+                        tmpobj += '<option value=' + goods[i].id + ' >' + goods[i].name + '</option>';
                     }
                 }
                 $select.html(tmpobj);
@@ -163,7 +163,7 @@
                 var tmpobj = '';
                 var $select = $('form[name="theForm"] select[name="result1"]');
                 for (i = 0; i < goods.length; i++) {
-                    tmpobj += "<option value='" + goods[i].id + "' data-url='" + goods[i].url + "'>" + goods[i].name + "</option>";
+                    tmpobj += '<option value=' + goods[i].id + ' data-url=' + goods[i].url + '>' + goods[i].name + '</option>';
                 }
                 $select.html(tmpobj);
                 $select.trigger("liszt:updated");
