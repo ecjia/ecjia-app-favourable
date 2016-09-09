@@ -29,7 +29,7 @@ class list_module extends api_admin implements api_interface {
 		$data = array();
 		if (!empty($result['item'])) {
 			/* 取得用户等级 */
-			$db_user_rank = RC_Loader::load_app_model('user_rank_model', 'user');
+			$db_user_rank = RC_Model::model('user/user_rank_model');
 			$user_rank_list = $db_user_rank->field('rank_id, rank_name')->select();
 			foreach ($result['item'] as $key => $val) {
 				$rank_name = array();

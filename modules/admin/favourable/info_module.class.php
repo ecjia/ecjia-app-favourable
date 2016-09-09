@@ -33,7 +33,7 @@ class info_module extends api_admin implements api_interface {
 			} elseif ($result['act_range'] == 1) {
 				$result['label_act_range'] = __('指定分类');
 				if (!empty($result['act_range_ext'])) {
-					$db_category = RC_Loader::load_app_model('category_model', 'goods');
+					$db_category = RC_Model::model('goods/category_model');
 					foreach ($result['act_range_ext'] as $key => $val) {
 						$image = $db_category->where(array('cat_id' => $val['id']))->get_field('style');
 						$result['act_range_ext'][$key]['image'] = !empty($image) ? RC_Upload::upload_url($image) : '';
@@ -42,8 +42,8 @@ class info_module extends api_admin implements api_interface {
 			} elseif ($result['act_range'] == 2) {
 				$result['label_act_range'] = __('指定品牌');
 				if (!empty($result['act_range_ext'])) {
-					$db_brand = RC_Loader::load_app_model('brand_model', 'goods');
-					$db_merchants_brand_db = RC_Loader::load_app_model('merchants_shop_brand_viewmodel', 'goods');
+					$db_brand = RC_Model::model('goods/brand_model');
+					$db_merchants_brand_db = RC_Model::model('goods/merchants_shop_brand_viewmodel');
 						
 					foreach ($result['act_range_ext'] as $key => $val) {
 						if (!isset($_SESSION['seller_id'])) {
@@ -62,7 +62,7 @@ class info_module extends api_admin implements api_interface {
 			} else {
 				$result['label_act_range'] = __('指定商品');
 				if (!empty($result['act_range_ext'])) {
-					$db_goods = RC_Loader::load_app_model('goods_model', 'goods');
+					$db_goods = RC_Model::model('goods/goods_model');
 					foreach ($result['act_range_ext'] as $key => $val) {
 						$image = $db_goods->where(array('goods_id' => $val['id']))->get_field('original_img');
 						if (strpos($image, 'http://') === false) {
@@ -78,7 +78,7 @@ class info_module extends api_admin implements api_interface {
 			if ($result['act_type'] == 0) {
 				$result['label_act_type'] = __('特惠品');
 				if (!empty($result['gift'])) {
-					$db_goods = RC_Loader::load_app_model('goods_model', 'goods');
+					$db_goods = RC_Model::model('goods/goods_model');
 					foreach ($result['gift'] as $val) {
 						$info = $db_goods->field(array('goods_name', 'shop_price', 'original_img'))->where(array('goods_id' => $val['id']))->find();
 						if (strpos($info['original_img'], 'http://') === false) {
