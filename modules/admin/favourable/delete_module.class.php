@@ -18,7 +18,7 @@ class delete_module extends api_admin implements api_interface {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		
-		$favourable = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
+		$favourable = RC_Model::model('favourable/favourable_activity_model')->favourable_info($id);
 		if (empty($favourable)) {
 			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
@@ -38,7 +38,7 @@ class delete_module extends api_admin implements api_interface {
 			$act_type = '享受价格折扣';
 		}
 		
-		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_remove($id);
+		$result = RC_Model::model('favourable/favourable_activity_model')->favourable_remove($id);
 		ecjia_admin::admin_log($name.'，'.'优惠活动方式是 '.$act_type, 'remove', 'favourable');
 		return array();
 	}

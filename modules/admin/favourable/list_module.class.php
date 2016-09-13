@@ -25,7 +25,7 @@ class list_module extends api_admin implements api_interface {
 			'page'	 => !empty($page) ? intval($page) : 1,
 		);
 		
-		$result = RC_Model::Model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
+		$result = RC_Model::model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
 		$data = array();
 		if (!empty($result['item'])) {
 			/* 取得用户等级 */
