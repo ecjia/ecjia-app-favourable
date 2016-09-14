@@ -32,7 +32,7 @@ class list_module extends api_front implements api_interface {
 			$where['geohash'] = array('like' => "%$geohash_code%");
 		}
 		$options = array('location' => $location, 'page' => $page, 'size' => $size, 'where' => $where);
-		$cache_id = sprintf('%X', crc32($location . '-' . page  .'-' . $size  . '-' . $where ));
+		$cache_id = sprintf('%X', crc32($geohash_code . '-' . page  .'-' . $size  . '-' . $where ));
 		
 		$cache_key = 'api_favourable_list_'.'_'.$cache_id;
 		$data = RC_Cache::app_cache_get($cache_key, 'favourable');
