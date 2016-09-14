@@ -10,7 +10,7 @@ class list_module extends api_front implements api_interface {
 	 public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 		$this->authSession();	
 		
-		$location	 = $this->requestdata('loaction', array());
+		$location	 = $this->requestData('loaction', array());
 		/*经纬度为空判断*/
 		if (!is_array($location) || empty($location['longitude']) || empty($location['latitude'])) {
 			return new ecjia_error('invalid_parameter', '参数无效');
