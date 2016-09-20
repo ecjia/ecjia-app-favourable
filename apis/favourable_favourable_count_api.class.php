@@ -1,11 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
 /**
- * 获取商家活动
+ * 获取商家活动总数
  * @author zrl
- *
+ * @param   array	 $options（包含经纬度，当前页码，每页显示条数）
+ * @return  array   商家活动数组
  */
-class favourable_favourable_list_api extends Component_Event_Api {
+class favourable_favourable_count_api extends Component_Event_Api {
     
     public function call(&$options) {
     	if (!is_array($options)) {
@@ -33,15 +34,8 @@ class favourable_favourable_list_api extends Component_Event_Api {
     		$favourable_activity_dbview->whereIn(RC_DB::raw('fa.store_id'), $options['store_Id']);
     	}
     	
-    	$res = $favourable_activity_dbview
-			    	->selectRaw('fa.*, s.merchant_name')
-			    	->orderby($options['sort_by'], $options['sort_order'])
-			    	->take($options['limit'])
-			    	->skip($options['skip'])
-			    	->get();
-    	return $res;
+    	return $favourable_activity_dbview->count();
     }
-  
 }
 
 // end

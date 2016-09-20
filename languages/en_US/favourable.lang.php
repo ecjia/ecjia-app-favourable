@@ -83,6 +83,7 @@ return array(
 	'remove_success'		=> 'Delete success',
 	'edit_name_success'		=> 'Update favourable activity name success',
 	'pls_enter_name'		=> 'Please enter activity keywords',
+	'pls_enter_merchant_name'	=> 'Please enter merchant name',
 	'sort_edit_ok'			=> 'Sort operation success',
 	'farourable_time'		=> 'Favourable activity time:',
 	'to'					=> 'to',
@@ -116,6 +117,8 @@ return array(
 	'batch_drop_confirm' 	=> 'Are you sure you want to delete the selected concession activities?',
 	'all'					=> 'All',
 	'on_going'				=> 'On going',
+	'merchants'				=> 'Merchants',
+	'merchant_name'			=> 'Merchant name',
 	
 	'overview'         		=> 'Overview',
 	'more_info'        		=> 'More information:',

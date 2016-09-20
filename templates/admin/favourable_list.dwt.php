@@ -22,7 +22,7 @@
 	<ul class="nav nav-pills">
 		<li class="{if $smarty.get.type eq ''}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init"}'>{lang key='favourable::favourable.all'} <span class="badge badge-info">{if $favourable_list.count.count}{$favourable_list.count.count}{else}0{/if}</span> </a></li>
 		<li class="{if $smarty.get.type eq 'on_going'}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init" args="type=on_going"}'>{lang key='favourable::favourable.on_going'}<span class="badge badge-info">{if $favourable_list.count.on_going}{$favourable_list.count.on_going}{else}0{/if}</span> </a></li>
-		<li class="{if $smarty.get.type eq 'on_going'}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init" args="type=on_going"}'>{lang key='favourable::favourable.on_going'}<span class="badge badge-info">{if $favourable_list.count.on_going}{$favourable_list.count.on_going}{else}0{/if}</span> </a></li>
+		<li class="{if $smarty.get.type eq 'merchants'}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init" args="type=merchants"}'>{lang key='favourable::favourable.merchants'}<span class="badge badge-info">{if $favourable_list.count.merchants}{$favourable_list.count.merchants}{else}0{/if}</span> </a></li>
 	</ul>
 	
 	<form method="post" action="{$search_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm">
@@ -36,6 +36,7 @@
 			</ul>
 		</div>
 		<div class="choose_list f_r">
+			<input type="text" name="merchant_name" value="{$smarty.get.merchant_name}" placeholder="{lang key='favourable::favourable.pls_enter_merchant_name'}"/>
 			<input type="text" name="keyword" value="{$smarty.get.keyword}" placeholder="{lang key='favourable::favourable.pls_enter_name'}"/> 
 			<button class="btn search_articles" type="button">{lang key='favourable::favourable.search'}</button>
 		</div>
@@ -49,9 +50,10 @@
 				<tr>
 				    <th class="table_checkbox"><input type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/></th>
 				    <th>{lang key='favourable::favourable.act_name'}</th>
-				    <th class="w150">{lang key='favourable::favourable.start_time'}</th>
-				    <th class="w150">{lang key='favourable::favourable.end_time'}</th>
-				    <th class="w200">{lang key='favourable::favourable.min_amount'}</th>
+				    <th>{lang key='favourable::favourable.merchant_name'}</th>
+				    <th class="w100">{lang key='favourable::favourable.start_time'}</th>
+				    <th class="w100">{lang key='favourable::favourable.end_time'}</th>
+				    <th class="w100">{lang key='favourable::favourable.min_amount'}</th>
 				    <th class="w100">{lang key='favourable::favourable.max_amount'}</th>
 				    <th class="w50">{lang key='favourable::favourable.sort'}</th>
 			  	</tr>
@@ -60,12 +62,13 @@
 		    <tr>
 		      <td><span><input type="checkbox" class="checkbox" value="{$favourable.act_id}" name="checkboxes[]" ></span></td>
 		      <td class="hide-edit-area">
-		      <span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_act_name')}" data-name="act_name" data-pk="{$favourable.act_id}" data-title="{lang key='favourable::favourable.edit_act_name'}">{$favourable.act_name}</span>
-	     	  <div class="edit-list">
-				  <a class="data-pjax" href='{url path="favourable/admin/edit" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-		          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
-	    	  </div>
+			      <span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_act_name')}" data-name="act_name" data-pk="{$favourable.act_id}" data-title="{lang key='favourable::favourable.edit_act_name'}">{$favourable.act_name}</span>
+		     	  <div class="edit-list">
+					  <a class="data-pjax" href='{url path="favourable/admin/edit" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+			          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
+		    	  </div>
 		      </td>
+		      <td>{$favourable.merchant_name}</td>
 		      <td>{$favourable.start_time}</td>
 		      <td>{$favourable.end_time}</td>
 		      <td>{$favourable.min_amount}</td>

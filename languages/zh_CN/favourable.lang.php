@@ -83,6 +83,7 @@ return array(
 	'remove_success'		=> '删除成功',
 	'edit_name_success'		=> '更新优惠活动名称成功',
 	'pls_enter_name'		=> '请输入优惠活动名称',
+	'pls_enter_merchant_name'	=> '请输入商家名称',
 	'sort_edit_ok'			=> '排序操作成功',
 	'farourable_time'		=> '优惠活动时间：',
 	'to'					=> '至',
@@ -116,6 +117,8 @@ return array(
 	'batch_drop_confirm' 	=> '您确实要删除选中的优惠活动吗？',
 	'all'					=> '全部',
 	'on_going'				=> '正在进行中',
+	'merchants'				=> '商家',
+	'merchant_name'			=> '商家名称',
 				
 	'overview'				=> '概述',
 	'more_info'				=> '更多信息：',

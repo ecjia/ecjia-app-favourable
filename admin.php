@@ -488,34 +488,32 @@ class admin extends ecjia_admin {
 	private function get_favourable_list() {
 		$filter['sort_by']    	= empty($_GET['sort_by']) 	? 'act_id' 				: trim($_GET['sort_by']);
 		$filter['sort_order'] 	= empty($_GET['sort_order'])? 'DESC' 				: trim($_GET['sort_order']);
-		$filter['keyword']		= empty($_GET['keyword']) 	? '' 					: trim($_GET['keyword']);
+		$filter['keyword']		= empty($_GET['keyword']) 	? '' 					: mysql_like_quote(trim($_GET['keyword']));
+		$filter['merchant_name'] = empty($_GET['merchant_name']) ? '' 				: mysql_like_quote(trim($_GET['merchant_name']));
 		$filter['type'] 	 	= isset($_GET['type']) 		? trim($_GET['type']) 	: '';
+
+		/* 初始化优惠活动数量*/		
+		$favourable_count = array(
+				'count'		=> 0,//全部
+				'on_going'	=> 0,//进行中
+				'merchants'	=> 0,//商家
+		);
 		
-		$db_favourable_activity = RC_DB::table('favourable_activity');
-		/* 过滤条件 */
-		$where = array();
-		if (!empty($filter['keyword'])) {
-			$db_favourable_activity->where('act_name', 'like', '%' . mysql_like_quote($filter['keyword']) . '%');
-		}
+		$favourable_count['count']		= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name']));
+		$favourable_count['on_going']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'on_going'));
+		$favourable_count['merchants']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'merchant'));
 		
-		$time = RC_Time::gmtime();
-		$type_count = $db_favourable_activity
-			->select(RC_DB::raw('COUNT(*) as count'), RC_DB::raw('SUM(IF(start_time <'.$time.' and end_time > '.$time.', 1, 0)) as on_going'))
-			->first();
-	
-		if ($filter['type']  == 'on_going') {
-			$db_favourable_activity->where('start_time', '<=', $time)->where('end_time', '>=', $time);
+			
+		if ($filter['type'] == 'on_going') {
+			$page = new ecjia_page($favourable_count['on_going'], 15, 5);
+		} elseif ($filter['type'] == 'merchants') {
+			$page = new ecjia_page($favourable_count['merchants'], 15, 5);
+		} else {
+			$page = new ecjia_page($favourable_count['count'], 15, 5);
 		}
-	
-		$count = $db_favourable_activity->count();
-		$page = new ecjia_page($count, 10, 5);
-		$data = $db_favourable_activity
-			->orderby('sort_order', 'asc')
-			->orderby($filter['sort_by'], $filter['sort_order'])
-			->select('*')
-			->take(10)
-			->skip($page->start_id-1)
-			->get();
+		$filter['skip'] = $page->start_id-1;
+		$filter['limit'] = 15;
+		$data = RC_Api::api('favourable', 'favourable_list', $filter);
 		
 		$list = array();
 		if (!empty($data)) {
@@ -525,7 +523,7 @@ class admin extends ecjia_admin {
 				$list[] = $row;
 			}
 		}
-		return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $type_count);
+		return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $favourable_count);
 	}
 }
 
