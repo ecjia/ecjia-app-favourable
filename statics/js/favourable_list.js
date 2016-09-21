@@ -13,7 +13,7 @@
                 }
                 if (merchant_name != '') {
                 	url += '&merchant_name=' + merchant_name;
-                }console.log(url);
+                }
                 ecjia.pjax(url);
             });
         },

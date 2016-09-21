@@ -12,7 +12,13 @@ class favourable_favourable_list_api extends Component_Event_Api {
     		return new ecjia_error('invalid_parameter', '参数无效');
     	}
     	
-    	$favourable_activity_dbview = RC_DB::table('favourable_activity as fa')->leftJoin('store_franchisee as s', RC_DB::raw('fa.store_id'), '=', RC_DB::raw('s.store_id'));
+    	$favourable_activity_dbview = RC_DB::table('favourable_activity as fa');
+    	
+    	/* 判断是否有store应用*/
+    	$result = ecjia_app::validate_application('store');
+    	if (!is_ecjia_error($result)) {
+    		$favourable_activity_dbview->leftJoin('store_franchisee as s', RC_DB::raw('fa.store_id'), '=', RC_DB::raw('s.store_id'));
+    	}
     	
     	if (isset($options['keyword']) && !empty($options['keyword'])) {
     		$favourable_activity_dbview->where('act_name', 'like', '%' . $options['keyword'] . '%');

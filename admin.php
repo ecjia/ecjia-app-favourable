@@ -56,8 +56,11 @@ class admin extends ecjia_admin {
 		$this->assign('action_link', array('href' => RC_Uri::url('favourable/admin/add'), 'text' => RC_Lang::get('favourable::favourable.add_favourable')));
 		
 		$list = $this->get_favourable_list();
-
 		$this->assign('favourable_list', $list);
+		
+		$shop_type = RC_Config::load_config('site', 'SHOP_TYPE');
+		$shop_type = !empty($shop_type) ? $shop_type : 'b2c';
+		$this->assign('shop_type', $shop_type);
 		
 		$this->assign('search_action', RC_Uri::url('favourable/admin/init'));
 

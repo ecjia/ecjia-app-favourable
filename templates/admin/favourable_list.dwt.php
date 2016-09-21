@@ -22,7 +22,9 @@
 	<ul class="nav nav-pills">
 		<li class="{if $smarty.get.type eq ''}active{/if}"><a class="data-pjax" href='{$favourable_list.quickuri.init}'>{lang key='favourable::favourable.all'} <span class="badge badge-info">{if $favourable_list.count.count}{$favourable_list.count.count}{else}0{/if}</span> </a></li>
 		<li class="{if $smarty.get.type eq 'on_going'}active{/if}"><a class="data-pjax" href='{$favourable_list.quickuri.on_going}'>{lang key='favourable::favourable.on_going'}<span class="badge badge-info">{if $favourable_list.count.on_going}{$favourable_list.count.on_going}{else}0{/if}</span> </a></li>
+		<!-- {if $shop_type neq 'b2c'} -->
 		<li class="{if $smarty.get.type eq 'merchants'}active{/if}"><a class="data-pjax" href='{$favourable_list.quickuri.merchants}'>{lang key='favourable::favourable.merchants'}<span class="badge badge-info">{if $favourable_list.count.merchants}{$favourable_list.count.merchants}{else}0{/if}</span> </a></li>
+		<!-- {/if} -->
 	</ul>
 	
 	<form method="post" action="{$search_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm">
@@ -36,7 +38,9 @@
 			</ul>
 		</div>
 		<div class="choose_list f_r">
+			<!-- {if $shop_type neq 'b2c'} -->
 			<input type="text" name="merchant_name" value="{$smarty.get.merchant_name}" placeholder="{lang key='favourable::favourable.pls_enter_merchant_name'}"/>
+			<!-- {/if} -->
 			<input type="text" name="keyword" value="{$smarty.get.keyword}" placeholder="{lang key='favourable::favourable.pls_enter_name'}"/> 
 			<button class="btn search_articles" type="button">{lang key='favourable::favourable.search'}</button>
 		</div>
