@@ -54,7 +54,9 @@
 				<tr>
 				    <th class="table_checkbox"><input type="checkbox" name="select_rows" data-toggle="selectall" data-children=".checkbox"/></th>
 				    <th>{lang key='favourable::favourable.act_name'}</th>
+				    <!-- {if $shop_type neq 'b2c'} -->
 				    <th>{lang key='favourable::favourable.merchant_name'}</th>
+				    <!-- {/if} -->
 				    <th class="w100">{lang key='favourable::favourable.start_time'}</th>
 				    <th class="w100">{lang key='favourable::favourable.end_time'}</th>
 				    <th class="w100">{lang key='favourable::favourable.min_amount'}</th>
@@ -72,7 +74,9 @@
 			          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
 		    	  </div>
 		      </td>
+		      <!-- {if $shop_type neq 'b2c'} -->
 		      <td>{$favourable.merchants_name}</td>
+		      <!-- {/if} -->
 		      <td>{$favourable.start_time}</td>
 		      <td>{$favourable.end_time}</td>
 		      <td>{$favourable.min_amount}</td>

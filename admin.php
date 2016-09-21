@@ -502,16 +502,16 @@ class admin extends ecjia_admin {
 		empty($filter['keyword']) 		? '' : $uri['keyword'] = $filter['keyword'];
 		
 		$quickuri = array(
-				'init'			=> RC_Uri::url('favourable/admin/init', $uri),
-				'on_going'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'on_going'), $uri)),
-				'merchants'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'merchants'), $uri)),
+			'init'			=> RC_Uri::url('favourable/admin/init', $uri),
+			'on_going'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'on_going'), $uri)),
+			'merchants'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'merchants'), $uri)),
 		);
 		
 		/* 初始化优惠活动数量*/		
 		$favourable_count = array(
-				'count'		=> 0,//全部
-				'on_going'	=> 0,//进行中
-				'merchants'	=> 0,//商家
+			'count'		=> 0,//全部
+			'on_going'	=> 0,//进行中
+			'merchants'	=> 0,//商家
 		);
 		
 		$favourable_count['count']		= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name']));
