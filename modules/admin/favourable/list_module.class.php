@@ -18,12 +18,13 @@ class list_module extends api_admin implements api_interface {
 		$size = $this->requestData('pagination.count', 15);
 		$page = $this->requestData('pagination.page', 1);
 		
-		
 		$filter = array(
 			'status' => $status,
 			'size'	 => !empty($size) ? intval($size) : 15,
 			'page'	 => !empty($page) ? intval($page) : 1,
 		);
+		//TODO:区分管理员和卖家
+		$filter['seller_id'] = $_SESSION['seller_id'];
 		
 		$result = RC_Model::model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
 		$data = array();

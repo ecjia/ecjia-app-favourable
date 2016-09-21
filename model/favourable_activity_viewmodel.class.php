@@ -51,6 +51,11 @@ class favourable_activity_viewmodel extends Component_Model_View {
 			$where['end_time'] = array('elt' => $now);
 		}
 		
+		/* 卖家*/
+		if (isset($filter['seller_id'])) {
+		    $where['seller_id'] = $filter['seller_id'];
+		}
+		
 		/* 排序*/
 		$filter['sort_by']    = empty($filter['sort_by']) ? 'act_id' : trim($filter['sort_by']);
 		$filter['sort_order'] = empty($filter['sort_order']) ? 'DESC' : trim($filter['sort_order']);
