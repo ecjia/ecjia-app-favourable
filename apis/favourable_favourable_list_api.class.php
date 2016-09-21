@@ -19,13 +19,13 @@ class favourable_favourable_list_api extends Component_Event_Api {
     	}
     	
     	if (isset($options['merchant_name']) && !empty($options['merchant_name'])) {
-    		$favourable_activity_dbview->where('merchant_name', 'like', '%' . $options['merchant_name'] . '%');
+    		$favourable_activity_dbview->where('merchants_name', 'like', '%' . $options['merchant_name'] . '%');
     	}
     	
     	if (isset($options['type']) && $options['type'] == 'on_going') {
     		$time = RC_Time::gmtime();
     		$favourable_activity_dbview->where('start_time', '<=', $time)->where('end_time', '>=', $time);
-    	} elseif (isset($options['type']) && $options['type'] == 'merchant') {
+    	} elseif (isset($options['type']) && $options['type'] == 'merchants') {
     		$favourable_activity_dbview->where(RC_DB::raw('fa.store_id'), '>', 0);
     	}
     	
@@ -34,7 +34,7 @@ class favourable_favourable_list_api extends Component_Event_Api {
     	}
     	
     	$res = $favourable_activity_dbview
-			    	->selectRaw('fa.*, s.merchant_name')
+			    	->selectRaw('fa.*, s.merchants_name')
 			    	->orderby($options['sort_by'], $options['sort_order'])
 			    	->take($options['limit'])
 			    	->skip($options['skip'])

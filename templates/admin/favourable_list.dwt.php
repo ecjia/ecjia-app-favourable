@@ -20,9 +20,9 @@
 <!-- 批量操作和搜索 -->
 <div class="row-fluid batch" >
 	<ul class="nav nav-pills">
-		<li class="{if $smarty.get.type eq ''}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init"}'>{lang key='favourable::favourable.all'} <span class="badge badge-info">{if $favourable_list.count.count}{$favourable_list.count.count}{else}0{/if}</span> </a></li>
-		<li class="{if $smarty.get.type eq 'on_going'}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init" args="type=on_going"}'>{lang key='favourable::favourable.on_going'}<span class="badge badge-info">{if $favourable_list.count.on_going}{$favourable_list.count.on_going}{else}0{/if}</span> </a></li>
-		<li class="{if $smarty.get.type eq 'merchants'}active{/if}"><a class="data-pjax" href='{url path="favourable/admin/init" args="type=merchants"}'>{lang key='favourable::favourable.merchants'}<span class="badge badge-info">{if $favourable_list.count.merchants}{$favourable_list.count.merchants}{else}0{/if}</span> </a></li>
+		<li class="{if $smarty.get.type eq ''}active{/if}"><a class="data-pjax" href='{$favourable_list.quickuri.init}'>{lang key='favourable::favourable.all'} <span class="badge badge-info">{if $favourable_list.count.count}{$favourable_list.count.count}{else}0{/if}</span> </a></li>
+		<li class="{if $smarty.get.type eq 'on_going'}active{/if}"><a class="data-pjax" href='{$favourable_list.quickuri.on_going}'>{lang key='favourable::favourable.on_going'}<span class="badge badge-info">{if $favourable_list.count.on_going}{$favourable_list.count.on_going}{else}0{/if}</span> </a></li>
+		<li class="{if $smarty.get.type eq 'merchants'}active{/if}"><a class="data-pjax" href='{$favourable_list.quickuri.merchants}'>{lang key='favourable::favourable.merchants'}<span class="badge badge-info">{if $favourable_list.count.merchants}{$favourable_list.count.merchants}{else}0{/if}</span> </a></li>
 	</ul>
 	
 	<form method="post" action="{$search_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm">
@@ -68,7 +68,7 @@
 			          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
 		    	  </div>
 		      </td>
-		      <td>{$favourable.merchant_name}</td>
+		      <td>{$favourable.merchants_name}</td>
 		      <td>{$favourable.start_time}</td>
 		      <td>{$favourable.end_time}</td>
 		      <td>{$favourable.min_amount}</td>

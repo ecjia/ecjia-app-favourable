@@ -53,7 +53,7 @@ class list_module extends api_front implements api_interface {
 				foreach ($favourable_list as $key => $row) {
 					$data['list'][] = array(
 							'seller_id'				=> 	$row['seller_id'],
-							'seller_name'			=>  $row['merchant_name'],
+							'seller_name'			=>  $row['merchants_name'],
 							'seller_logo'			=>  '',//TODO::待做
 							'favourable_name'		=>  $row['act_name'],
 							'favourable_type'		=>  ($row['act_type'] == 1 || $row['act_type'] == 2) ?  $row['act_type'] == 1 ? 'price_reduction' : 'price_discount' : 'premiums',

@@ -58,6 +58,7 @@ class admin extends ecjia_admin {
 		$list = $this->get_favourable_list();
 
 		$this->assign('favourable_list', $list);
+		
 		$this->assign('search_action', RC_Uri::url('favourable/admin/init'));
 
 		$this->display('favourable_list.dwt');
@@ -491,7 +492,18 @@ class admin extends ecjia_admin {
 		$filter['keyword']		= empty($_GET['keyword']) 	? '' 					: mysql_like_quote(trim($_GET['keyword']));
 		$filter['merchant_name'] = empty($_GET['merchant_name']) ? '' 				: mysql_like_quote(trim($_GET['merchant_name']));
 		$filter['type'] 	 	= isset($_GET['type']) 		? trim($_GET['type']) 	: '';
-
+// 		empty($code) ? '' : 'extension_code=' . $code
+		/* 连接导航*/
+		$uri = array();
+		empty($filter['merchant_name']) ? '' : $uri['merchant_name'] = $filter['merchant_name'];
+		empty($filter['keyword']) 		? '' : $uri['keyword'] = $filter['keyword'];
+		
+		$quickuri = array(
+				'init'			=> RC_Uri::url('favourable/admin/init', $uri),
+				'on_going'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'on_going'), $uri)),
+				'merchants'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'merchants'), $uri)),
+		);
+		
 		/* 初始化优惠活动数量*/		
 		$favourable_count = array(
 				'count'		=> 0,//全部
@@ -501,7 +513,7 @@ class admin extends ecjia_admin {
 		
 		$favourable_count['count']		= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name']));
 		$favourable_count['on_going']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'on_going'));
-		$favourable_count['merchants']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'merchant'));
+		$favourable_count['merchants']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'merchants'));
 		
 			
 		if ($filter['type'] == 'on_going') {
@@ -523,7 +535,7 @@ class admin extends ecjia_admin {
 				$list[] = $row;
 			}
 		}
-		return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $favourable_count);
+		return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $favourable_count, 'quickuri' => $quickuri);
 	}
 }
 
