@@ -8,11 +8,11 @@
                 var url = $("form[name='searchForm']").attr('action');
                 var keyword = $("input[name='keyword']").val();
                 var merchant_name = $("input[name='merchant_name']").val();
-                if (keyword != '') {
-                	url += '&keyword=' + keyword;
-                }
                 if (merchant_name != '') {
                 	url += '&merchant_name=' + merchant_name;
+                }
+                if (keyword != '') {
+                	url += '&keyword=' + keyword;
                 }
                 ecjia.pjax(url);
             });
