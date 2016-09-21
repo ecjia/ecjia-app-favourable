@@ -24,7 +24,7 @@ class manage_module extends api_admin implements api_interface {
 			'start_time'    => RC_Time::local_strtotime($this->requestData('start_time')),
 			'end_time'      => RC_Time::local_strtotime($this->requestData('end_time')),
 			'user_rank'     => $user_rank,
-			'act_range'     => $this->requestData('act_range'),
+			'act_range'     => $this->requestData('act_range', 0),
 			'act_range_ext' => $this->requestData('act_range_ext'),
 			'min_amount'    => $this->requestData('min_amount'),
 			'max_amount'    => $this->requestData('max_amount'),
@@ -32,7 +32,6 @@ class manage_module extends api_admin implements api_interface {
 			'act_type_ext'  => $this->requestData('act_type_ext'),
 			'gift'          => serialize($gift),
 		);
-		
 		/* 检查优惠活动时间 */
 		if ($favourable['start_time'] >= $favourable['end_time']) {
 			return new ecjia_error('time_error', __('优惠开始时间不能大于或等于结束时间'));
@@ -43,6 +42,9 @@ class manage_module extends api_admin implements api_interface {
 			return new ecjia_error('user_rank_error', __('请设置享受优惠的会员等级'));
 		}
 	
+		if (!in_array($favourable['act_range'], array(0, 1, 2))) {
+		    return new ecjia_error('act_range_error', __('请设置活动类型'));
+		}
 		/* 检查优惠范围扩展信息 */
 		if ($favourable['act_range'] > 0 && !isset($favourable['act_range_ext'])) {
 			return new ecjia_error('act_range_error', __('请设置优惠范围'));
@@ -68,7 +70,7 @@ class manage_module extends api_admin implements api_interface {
 		} else {
 			$act_type = '享受价格折扣';
 		}
-		RC_Model::Model('favourable/favourable_activity_model')->favourable_manage($favourable);
+		RC_Model::model('favourable/favourable_activity_model')->favourable_manage($favourable);
 		if ($act_id > 0 ) {
 			ecjia_admin::admin_log($favourable['act_name'].'，'.'优惠活动方式是 '.$act_type, 'edit', 'favourable');
 		} else {

@@ -163,7 +163,7 @@ class favourable_activity_model extends Component_Model_Model {
 		return $act_id;
 	}
 	
-	public function favourable_remove($act_id, $bool) {
+	public function favourable_remove($act_id, $bool = false) {
 // 		return $this->where(array('act_id' => $act_id))->delete();
 		if ($bool) {
 			return RC_DB::table('favourable_activity')->whereIn('act_id', $act_id)->delete();
