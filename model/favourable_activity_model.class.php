@@ -20,10 +20,10 @@ class favourable_activity_model extends Component_Model_Model {
 		
 // 		$where = array();
 		//判断是否为商家
-		if (isset($_SESSION['seller_id']) && ($_SESSION['seller_id'] > 0)) {
-// 			$where['seller_id'] = $_SESSION['seller_id'];
-			$db_favourable_activity->where('seller_id', $_SESSION['seller_id']);
-		}
+		// if (isset($_SESSION['seller_id']) && ($_SESSION['seller_id'] > 0)) {
+		// 	$where['seller_id'] = $_SESSION['seller_id'];
+		// 	$db_favourable_activity->where('seller_id', $_SESSION['seller_id']);
+		// }
 		
 		if (!empty($filter['keyword'])) {
 // 			$where['act_name'] = array('like' => "%" . mysql_like_quote($filter['keyword']) . "%");
@@ -152,9 +152,9 @@ class favourable_activity_model extends Component_Model_Model {
 // 			$this->where($where)->update($parameter);
 			
 			$db_favourable->where('act_id', $parameter['act_id']);
-			if (isset($parameter['seller_id'])) {
-				$db_favourable->where('seller_id', $parameter['seller_id']);
-			}
+			// if (isset($parameter['seller_id'])) {
+			// 	$db_favourable->where('seller_id', $parameter['seller_id']);
+			// }
 			$db_favourable->update($parameter);
 			
 			$act_id = $parameter['act_id'];

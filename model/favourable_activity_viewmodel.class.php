@@ -52,9 +52,9 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		}
 		
 		/* 卖家*/
-		if (isset($filter['seller_id'])) {
-		    $where['seller_id'] = $filter['seller_id'];
-		}
+		// if (isset($filter['seller_id'])) {
+		//     $where['seller_id'] = $filter['seller_id'];
+		// }
 		
 		/* 排序*/
 		$filter['sort_by']    = empty($filter['sort_by']) ? 'act_id' : trim($filter['sort_by']);
@@ -72,7 +72,7 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		//实例化分页
 		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
 		
-		$res = $this->join($join)->field(array('fa.*', 'seller_id', 'shop_name as seller_name'))->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page_row->limit())->select();
+		$res = $this->join($join)->field(array('fa.*', 'shop_name as seller_name'))->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page_row->limit())->select();
 		
 		$list = array();
 		if (!empty($res)) {

@@ -13,7 +13,7 @@ class admin extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_func('favourable');
-		$this->db_favourable_activity 	= RC_Model::model('favourable/favourable_activity_model');
+		$this->db_favourable_activity = RC_Model::model('favourable/favourable_activity_model');
 		
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
