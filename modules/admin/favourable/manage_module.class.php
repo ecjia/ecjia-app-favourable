@@ -13,7 +13,12 @@ class manage_module extends api_admin implements api_interface {
 		if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
 			return new ecjia_error(100, 'Invalid session');
 		}
-			
+		
+		$priv = $this->admin_priv('goods_manage');
+		if (is_ecjia_error($priv)) {
+			return $priv;
+		}
+		
 		RC_Loader::load_app_class('favourable', 'favourable', false);
 		
 		$act_id = $this->requestData('act_id', 0);

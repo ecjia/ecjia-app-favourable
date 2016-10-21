@@ -14,6 +14,11 @@ class list_module extends api_admin implements api_interface {
 			return new ecjia_error(100, 'Invalid session');
 		}
 		
+		$priv = $this->admin_priv('goods_manage');
+		if (is_ecjia_error($priv)) {
+			return $priv;
+		}
+		
 		$status = $this->requestData('status', 'coming');
 		$size = $this->requestData('pagination.count', 15);
 		$page = $this->requestData('pagination.page', 1);
