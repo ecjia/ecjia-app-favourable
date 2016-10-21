@@ -80,7 +80,7 @@ class favourable_activity_model extends Component_Model_Model {
 	
 	public function favourable_info($act_id) {
 // 		$favourable = $this->find(array('act_id' => $act_id));
-		$favourable = RC_DB::table('favourable_activity')->where('act_id', $act_id)->first();
+		$favourable = RC_DB::table('favourable_activity')->where('act_id', $act_id)->where('store_id', $_SESSION['store_id'])->first();
 		
 		if (!empty ($favourable)) {
 			$favourable['start_time']	= RC_Time::local_date(ecjia::config('time_format'), $favourable['start_time']);
@@ -118,14 +118,14 @@ class favourable_activity_model extends Component_Model_Model {
 					
 				} elseif ($favourable['act_range'] == FAR_BRAND) {
 					/* 区分入驻商及平台*/
-					if (!isset($_SESSION['seller_id'])) {
+// 					if (!isset($_SESSION['seller_id'])) {
 						$act_range_ext = RC_DB::table('brand')->whereIn('brand_id', $favourable['act_range_ext'])->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'))->get();
-					} else {
-						$act_range_ext = RC_DB::table('merchants_shop_brand')->leftJoin('seller_shopinfo', 'seller_shopinfo.id', '=', 'merchants_shop_brand.seller_id')
-							->select(RC_DB::raw('bid as id'), RC_DB::raw('brandName as name'))
-							->whereIn('bid', $favourable['act_range_ext'])
-							->get();
-					}
+// 					} else {
+// 						$act_range_ext = RC_DB::table('merchants_shop_brand')->leftJoin('seller_shopinfo', 'seller_shopinfo.id', '=', 'merchants_shop_brand.seller_id')
+// 							->select(RC_DB::raw('bid as id'), RC_DB::raw('brandName as name'))
+// 							->whereIn('bid', $favourable['act_range_ext'])
+// 							->get();
+// 					}
 				} else {
 					$act_range_ext = RC_DB::table('goods')->whereIn('goods_id', $favourable['act_range_ext'])->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'))->get();
 				}
@@ -150,9 +150,9 @@ class favourable_activity_model extends Component_Model_Model {
 // 			$this->where($where)->update($parameter);
 			
 			$db_favourable->where('act_id', $parameter['act_id']);
-			// if (isset($parameter['seller_id'])) {
-			// 	$db_favourable->where('seller_id', $parameter['seller_id']);
-			// }
+			if (isset($parameter['store_id'])) {
+				$db_favourable->where('store_id', $parameter['store_id']);
+			}
 			$db_favourable->update($parameter);
 			
 			$act_id = $parameter['act_id'];
@@ -163,6 +163,9 @@ class favourable_activity_model extends Component_Model_Model {
 	
 	public function favourable_remove($act_id, $bool = false) {
 // 		return $this->where(array('act_id' => $act_id))->delete();
+		if (!empty($_SESSION['store_id']) && $_SESSION['store_id'] > 0) {
+			RC_DB::table('favourable_activity')->where('store_id', $_SESSION['store_id']);
+		}
 		if ($bool) {
 			return RC_DB::table('favourable_activity')->whereIn('act_id', $act_id)->delete();
 		}

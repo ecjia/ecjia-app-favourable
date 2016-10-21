@@ -10,7 +10,7 @@ class manage_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
 		$this->authadminSession();
-		if ($_SESSION['admin_id'] <= 0) {
+		if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
 			return new ecjia_error(100, 'Invalid session');
 		}
 			
@@ -59,8 +59,8 @@ class manage_module extends api_admin implements api_interface {
 		if ($act_id > 0) {
 			$favourable['act_id'] = $act_id;
 		}
-		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0) {
-			$favourable['seller_id'] = $_SESSION['seller_id'];
+		if (isset($_SESSION['store_id']) && $_SESSION['store_id'] > 0) {
+			$favourable['store_id'] = $_SESSION['store_id'];
 		}
 		
 		if ($favourable['act_type'] == 0) {

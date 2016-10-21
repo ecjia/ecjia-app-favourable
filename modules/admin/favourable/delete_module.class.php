@@ -10,7 +10,7 @@ class delete_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
 		$this->authadminSession();
-		if ($_SESSION['admin_id'] <= 0) {
+		if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
 			return new ecjia_error(100, 'Invalid session');
 		}
 		$id = $this->requestData('act_id', 0);
@@ -23,7 +23,7 @@ class delete_module extends api_admin implements api_interface {
 			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 		/* 多商户处理*/
-		if (isset($_SESSION['seller_id']) && $_SESSION['seller_id'] > 0 && $favourable['seller_id'] != $_SESSION['seller_id']) {
+		if (isset($_SESSION['store_id']) && $_SESSION['store_id'] > 0 && $favourable['store_id'] != $_SESSION['store_id']) {
 			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
 		
