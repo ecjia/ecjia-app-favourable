@@ -8,9 +8,9 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class list_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-    		
 		$this->authadminSession();
-		if ($_SESSION['admin_id'] <= 0) {
+		
+		if ($_SESSION['admin_id'] <= 0  && $_SESSION['staff_id'] <= 0) {
 			return new ecjia_error(100, 'Invalid session');
 		}
 		
@@ -24,7 +24,8 @@ class list_module extends api_admin implements api_interface {
 			'page'	 => !empty($page) ? intval($page) : 1,
 		);
 		//TODO:区分管理员和卖家
-		$filter['seller_id'] = $_SESSION['seller_id'];
+		//$filter['seller_id'] = $_SESSION['seller_id'];
+		$filter['store_id'] = $_SESSION['store_id'];
 		
 		$result = RC_Model::model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
 		$data = array();
@@ -54,8 +55,8 @@ class list_module extends api_admin implements api_interface {
 					'max_amount'	=> $val['max_amount'],
 					'formatted_start_time'	=> $val['start_time'],
 					'formatted_end_time'	=> $val['end_time'],
-					'seller_id'		=> !empty($val['seller_id']) ? $val['seller_id'] : 0,
-					'seller_name'	=> !empty($val['seller_name']) ? $val['seller_name'] : '自营', 
+					'seller_id'		=> !empty($val['store_id']) ? $val['store_id'] : 0,
+					'seller_name'	=> !empty($val['merchants_name']) ? $val['merchants_name'] : '自营', 
 				);
 			}
 		}

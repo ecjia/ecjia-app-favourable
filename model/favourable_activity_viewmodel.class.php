@@ -9,10 +9,10 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		$this->table_alias_name = 'fa';
 		
 		$this->view = array(
-			'seller_shopinfo' => array(
+			'store_franchisee' => array(
 				'type' 	=> Component_Model_View::TYPE_LEFT_JOIN,
 				'alias' => 'ssi',
-				'on' 	=> "ssi.id = fa.seller_id"
+				'on' 	=> "ssi.store_id = fa.store_id"
 			)
 		);
 		parent::__construct();
@@ -50,9 +50,9 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		}
 		
 		/* 卖家*/
-		// if (isset($filter['seller_id'])) {
-		//     $where['seller_id'] = $filter['seller_id'];
-		// }
+		if (isset($filter['store_id'])) {
+		    $where['fa.store_id'] = $filter['store_id'];
+		}
 		
 		/* 排序*/
 		$filter['sort_by']    = empty($filter['sort_by']) ? 'act_id' : trim($filter['sort_by']);
@@ -60,17 +60,17 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		
 		$join = null;
 		/* 判断是否是b2b2c*/
-		$result_app = ecjia_app::validate_application('seller');
-		$is_active = ecjia_app::is_active('ecjia.seller');
-		if (!is_ecjia_error($result_app) && $is_active) {
-			$join = array('seller_shopinfo');
-		}
+		//$result_app = ecjia_app::validate_application('seller');
+		//$is_active = ecjia_app::is_active('ecjia.seller');
+		//if (!is_ecjia_error($result_app) && $is_active) {
+		//	$join = array('seller_shopinfo');
+		//}
 		
 		$count = $this->where($where)->join(null)->count();
 		//实例化分页
 		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
 		
-		$res = $this->join($join)->field(array('fa.*', 'shop_name as seller_name'))->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page_row->limit())->select();
+		$res = $this->join(array('store_franchisee'))->field(array('fa.*', 'ssi.merchants_name'))->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page_row->limit())->select();
 		
 		$list = array();
 		if (!empty($res)) {
@@ -86,10 +86,12 @@ class favourable_activity_viewmodel extends Component_Model_View {
 	
 	/*获取商家活动列表*/
 	public function seller_activity_list($options) {
-		$record_count = $this->join(array('seller_shopinfo'))->where($options)->count();
+		//$record_count = $this->join(array('seller_shopinfo'))->where($options)->count();
+		$record_count = $this->join(array('store_franchisee'))->where($options)->count();
 		//实例化分页
 		$page_row = new ecjia_page($record_count, $options['size'], 6, '', $options['page']);
-		$res = $this->join(array('seller_shopinfo'))->where($options['where'])->field('ssi.shop_name, ssi.logo_thumb,fa.*')->limit($page_row->limit())->select();
+		//$res = $this->join(array('seller_shopinfo'))->where($options['where'])->field('ssi.shop_name, ssi.logo_thumb,fa.*')->limit($page_row->limit())->select();
+		$res = $this->join(array('store_franchisee'))->where($options['where'])->field('ssi.merchants_name,fa.*')->limit($page_row->limit())->select();
 		return array('favourable_list' => $res, 'page' => $page_row);
 	}
 }
