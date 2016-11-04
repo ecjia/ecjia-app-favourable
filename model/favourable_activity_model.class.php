@@ -80,7 +80,10 @@ class favourable_activity_model extends Component_Model_Model {
 	
 	public function favourable_info($act_id) {
 // 		$favourable = $this->find(array('act_id' => $act_id));
-		$favourable = RC_DB::table('favourable_activity')->where('act_id', $act_id)->where('store_id', $_SESSION['store_id'])->first();
+		if (!empty($_SESSION['store_id']) && $_SESSION['store_id'] > 0) {
+			RC_DB::table('favourable_activity')->where('store_id', $_SESSION);
+		}
+		$favourable = RC_DB::table('favourable_activity')->where('act_id', $act_id)->first();
 		
 		if (!empty ($favourable)) {
 			$favourable['start_time']	= RC_Time::local_date(ecjia::config('time_format'), $favourable['start_time']);
