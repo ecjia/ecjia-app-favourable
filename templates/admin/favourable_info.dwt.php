@@ -126,7 +126,7 @@
 								<div class="control-group-small">
 					  				<div class="edit-page">
 										<select name="act_type" id="act_type_id" class="" >
-											<option value="0" {if $favourable.act_type eq 0}selected="selected"{/if}>{lang key='favourable::favourable.fat_goods'}</option>
+<!-- 											<option value="0" {if $favourable.act_type eq 0}selected="selected"{/if}>{lang key='favourable::favourable.fat_goods'}</option> -->
 											<option value="1" {if $favourable.act_type eq 1}selected="selected"{/if}>{lang key='favourable::favourable.fat_price'}</option>
 											<option value="2" {if $favourable.act_type eq 2}selected="selected"{/if}>{lang key='favourable::favourable.fat_discount'}</option>
 								        </select>
@@ -135,6 +135,8 @@
 									<div class="m_t5 m_b5 clear">
 								        <span class="help-block">{lang key='favourable::favourable.notice_act_type'}</span>
 									</div>
+									
+									<!-- 
 									<div class="choose_list" id="type_search"{if $favourable.act_type neq 0} style="display:none"{/if}>
 										<div class="control-group m_t10" >
 									    	<input name="keyword1" type="text" id="keyword1"  placeholder="{lang key='favourable::favourable.enter_keywords'}" />
@@ -142,9 +144,9 @@
 									    </div>
 									    <div id="gift-div" {if $favourable.gift}class="m_b15"{/if}>
 				                            <table id="gift-table" >
-										      <!-- {if $favourable.gift} -->
+										        {if $favourable.gift}
 										        <tr align="center"><td><strong>{lang key='favourable::favourable.gift'}</strong></td><td><strong>{lang key='favourable::favourable.price'}</strong></td></tr>
-										        <!-- {foreach from=$favourable.gift item=goods key=key} -->
+										        {foreach from=$favourable.gift item=goods key=key}
 										        <tr align="center">
 										        	<td>
 										        		<input type="hidden" name="gift_id[{$key}]" value="{$goods.id}" />{$goods.name}
@@ -155,15 +157,17 @@
 												        <a href="javascript:;" class="delact "><i class="fontello-icon-minus-circled ecjiafc-red"></i></a>
 											        </td>
 										        </tr>
-										        <!-- {/foreach} -->
-									   		 <!-- {/if} -->
+										        {/foreach}
+									   		 {/if}
 								     	 	</table>
 								    	</div>
 									    <div id="selectbig" style="display:none">
 										    <select name="result1" id="result1" class="w300 noselect" size="10">
 										    </select>
 									    </div>
-							    	</div>						    	
+							    	</div>
+							    	 -->
+							    	 						    	
 								</div>
 							</div>
 						</div>

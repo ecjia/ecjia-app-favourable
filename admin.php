@@ -177,12 +177,12 @@ class admin extends ecjia_admin {
 		}
 		
 		/* 取得赠品 */
-		$gift = array();
-		if (intval($_POST['act_type']) == FAT_GOODS && isset($_POST['gift_id'])) {
-			foreach ($_POST['gift_id'] as $key => $id) {
-				$gift[] = array('id' => $id, 'name' => $_POST['gift_name'][$key], 'price' => $_POST['gift_price'][$key]);
-			}
-		}
+// 		$gift = array();
+// 		if (intval($_POST['act_type']) == FAT_GOODS && isset($_POST['gift_id'])) {
+// 			foreach ($_POST['gift_id'] as $key => $id) {
+// 				$gift[] = array('id' => $id, 'name' => $_POST['gift_name'][$key], 'price' => $_POST['gift_price'][$key]);
+// 			}
+// 		}
 
 		/* 提交值 */
 		$favourable = array(
@@ -196,15 +196,17 @@ class admin extends ecjia_admin {
 			'max_amount'    => $max_amount,
 			'act_type'      => intval($_POST['act_type']),
 			'act_type_ext'  => floatval($_POST['act_type_ext']),
-			'gift'          => serialize($gift)
+// 			'gift'          => serialize($gift)
 		);
 
-		if ($favourable['act_type'] == FAT_GOODS) {
-			$favourable['act_type_ext'] = round($favourable['act_type_ext']);
-		}
-		if ($favourable['act_type'] == 0) {
-			$act_type = RC_Lang::get('favourable::favourable.fat_goods');
-		} elseif ($favourable['act_type'] == 1) {
+// 		if ($favourable['act_type'] == FAT_GOODS) {
+// 			$favourable['act_type_ext'] = round($favourable['act_type_ext']);
+// 		}
+// 		if ($favourable['act_type'] == 0) {
+// 			$act_type = RC_Lang::get('favourable::favourable.fat_goods');
+// 		} elseif ($favourable['act_type'] == 1) {
+
+		if ($favourable['act_type'] == 1) {
 			$act_type = RC_Lang::get('favourable::favourable.fat_price');
 		} else {
 			$act_type = RC_Lang::get('favourable::favourable.fat_discount');
@@ -291,12 +293,12 @@ class admin extends ecjia_admin {
 		}
 		
 		/* 取得赠品 */
-		$gift = array();
-		if (intval($_POST['act_type']) == FAT_GOODS && isset($_POST['gift_id'])) {
-			foreach ($_POST['gift_id'] as $key => $id) {
-				$gift[] = array('id' => $id, 'name' => $_POST['gift_name'][$key], 'price' => $_POST['gift_price'][$key]);
-			}
-		}
+// 		$gift = array();
+// 		if (intval($_POST['act_type']) == FAT_GOODS && isset($_POST['gift_id'])) {
+// 			foreach ($_POST['gift_id'] as $key => $id) {
+// 				$gift[] = array('id' => $id, 'name' => $_POST['gift_name'][$key], 'price' => $_POST['gift_price'][$key]);
+// 			}
+// 		}
 		
 		/* 提交值 */
 		$favourable = array(
@@ -311,16 +313,17 @@ class admin extends ecjia_admin {
 			'max_amount'    => $max_amount,
 			'act_type'      => intval($_POST['act_type']),
 			'act_type_ext'  => floatval($_POST['act_type_ext']),
-			'gift'          => serialize($gift)
+// 			'gift'          => serialize($gift)
 		);
 
-		if ($favourable['act_type'] == FAT_GOODS) {
-			$favourable['act_type_ext'] = round($favourable['act_type_ext']);
-		}
-		
-		if ($favourable['act_type'] == 0) {
-			$act_type = RC_Lang::get('favourable::favourable.fat_goods');
-		} elseif ($favourable['act_type'] == 1) {
+// 		if ($favourable['act_type'] == FAT_GOODS) {
+// 			$favourable['act_type_ext'] = round($favourable['act_type_ext']);
+// 		}
+// 		if ($favourable['act_type'] == 0) {
+// 			$act_type = RC_Lang::get('favourable::favourable.fat_goods');
+// 		} elseif ($favourable['act_type'] == 1) {
+
+		if ($favourable['act_type'] == 1) {
 			$act_type = RC_Lang::get('favourable::favourable.fat_price');
 		} else {
 			$act_type = RC_Lang::get('favourable::favourable.fat_discount');
