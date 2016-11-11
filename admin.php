@@ -473,6 +473,7 @@ class admin extends ecjia_admin {
 			if (!empty($keyword)) {
 				$db_goods->where('goods_name', 'like', '%'.mysql_like_quote($keyword).'%');
 			}
+			$db_goods->where('is_delete', 0);
 			$arr = $db_goods->get();
 
 			if (!empty($arr)) {
