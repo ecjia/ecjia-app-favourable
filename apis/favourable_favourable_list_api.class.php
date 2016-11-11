@@ -3,7 +3,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 获取商家活动
  * @author zrl
- *
+ * 购物车有调用 by hyy
  */
 class favourable_favourable_list_api extends Component_Event_Api {
     
@@ -36,14 +36,23 @@ class favourable_favourable_list_api extends Component_Event_Api {
     	}
     	
     	if (isset($options['store_id']) && !empty($options['store_id'])) {
-    		$favourable_activity_dbview->whereIn(RC_DB::raw('fa.store_id'), $options['store_Id']);
+    	    if (is_array($options['store_id'])) {
+    	        $favourable_activity_dbview->whereIn(RC_DB::raw('fa.store_id'), $options['store_id']);
+    	    } else {
+    	        $favourable_activity_dbview->where(RC_DB::raw('fa.store_id'), $options['store_id']);
+    	    }
     	}
-    	
-    	$res = $favourable_activity_dbview
-	    	->orderby($options['sort_by'], $options['sort_order'])
-	    	->take($options['limit'])
-	    	->skip($options['skip'])
-	    	->get();
+    	if ($options['sort_by'] && $options['sort_order']) {
+    	    $favourable_activity_dbview->orderby($options['sort_by'], $options['sort_order']);
+    	}
+    	if ($options['limit']) {
+    	    $favourable_activity_dbview->take($options['limit']);
+    	}
+    	if ($options['skip']) {
+    	    $favourable_activity_dbview->skip($options['skip']);
+    	}
+	    	
+	    $res = $favourable_activity_dbview->get();
     	return $res;
     }
   
