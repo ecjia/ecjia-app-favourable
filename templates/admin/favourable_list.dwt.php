@@ -75,7 +75,7 @@
 		    	  </div>
 		      </td>
 		      <!-- {if $shop_type neq 'b2c'} -->
-		      <td>{$favourable.merchants_name}</td>
+		      <td style="color:red;">{$favourable.merchants_name}</td>
 		      <!-- {/if} -->
 		      <td>{$favourable.start_time}</td>
 		      <td>{$favourable.end_time}</td>
