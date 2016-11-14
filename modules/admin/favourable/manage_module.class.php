@@ -47,7 +47,7 @@ class manage_module extends api_admin implements api_interface {
 			return new ecjia_error('user_rank_error', __('请设置享受优惠的会员等级'));
 		}
 	
-		if (!in_array($favourable['act_range'], array(0, 1, 2))) {
+		if (!in_array($favourable['act_range'], array(0, 1, 2, 3))) {
 		    return new ecjia_error('act_range_error', __('请设置活动类型'));
 		}
 		/* 检查优惠范围扩展信息 */
