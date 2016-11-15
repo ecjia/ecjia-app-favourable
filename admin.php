@@ -262,8 +262,15 @@ class admin extends ecjia_admin {
 		
 		$act_name 	= !empty($_POST['act_name']) 	? trim($_POST['act_name']) : '';
 		$act_id 	= !empty($_POST['act_id']) 		? intval($_POST['act_id']) : 0;
+		$store_id 	= !empty($_POST['store_id']) 		? intval($_POST['store_id']) : 0;
 		
-		if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $act_id)->count() > 0) {
+		if ($store_id > 0) {
+			$count = RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $act_id)->where('store_id', $store_id)->count();
+		} else {
+			$count = RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $act_id)->count();
+		}
+		
+		if ($count > 0) {
 			$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$start_time = !empty($_POST['start_time'])	? RC_Time::local_strtotime($_POST['start_time']) 	: '';
@@ -393,9 +400,16 @@ class admin extends ecjia_admin {
 		
 		$act_name = trim($_POST['value']);
 		$id	= intval($_POST['pk']);
+		$store_id = intval($_REQUEST['store_id']);
 		
+		if ($store_id > 0) {
+			$count = RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $id)->where('store_id', $store_id)->count();
+		} else {
+			$count = RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $id)->count();
+		}
+	
 		if (!empty($act_name)) {
-			if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('act_id', '!=', $id)->count() == 0) {
+			if ($count == 0) {
 				$data = array(
 					'act_id'	=> $id,
 					'act_name'	=> $act_name

@@ -68,7 +68,7 @@
 		    <tr>
 		      <td><span><input type="checkbox" class="checkbox" value="{$favourable.act_id}" name="checkboxes[]" ></span></td>
 		      <td class="hide-edit-area">
-			      <span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('favourable/admin/edit_act_name')}" data-name="act_name" data-pk="{$favourable.act_id}" data-title="{lang key='favourable::favourable.edit_act_name'}">{$favourable.act_name}</span>
+			      <span class="cursor_pointer" data-trigger="editable" data-url='{url path="favourable/admin/edit_act_name" args="store_id={$favourable.store_id}"}' data-name="act_name" data-pk="{$favourable.act_id}" data-title="{lang key='favourable::favourable.edit_act_name'}">{$favourable.act_name}</span>
 		     	  <div class="edit-list">
 					  <a class="data-pjax" href='{url path="favourable/admin/edit" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 			          <a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='favourable::favourable.remove_confirm'}" href='{url path="favourable/admin/remove" args="act_id={$favourable.act_id}"}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
