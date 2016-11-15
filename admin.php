@@ -147,7 +147,7 @@ class admin extends ecjia_admin {
 		$this->admin_priv('favourable_update' ,ecjia::MSGTYPE_JSON);
 		
     	$act_name = !empty($_POST['act_name']) ? trim($_POST['act_name']) : '';
-	    $store_id = !empty($_POST['store_id']) ? trim($_POST['store_id']) : 0;
+	    $store_id = !empty($_POST['store_id']) ? intval($_POST['store_id']) : 0;
 		if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('store_id', $store_id)->count() > 0) {
 			$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
