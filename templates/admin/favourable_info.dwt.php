@@ -95,6 +95,7 @@
 									</div>
 									<div class="m_t10 choose_list" id="range_search" {if $favourable.act_range eq 0} style="display:none"{/if} >
 										<input name="keyword" type="text" id="keyword" placeholder="{lang key='favourable::favourable.keywords'}">
+										<input name="store_id" type="hidden" id="store_id" value="{$favourable.store_id}" />
 										<button class="btn" type="button" id="search" data-url='{url path="favourable/admin/search"}'>{lang key='system::system.button_search'}</button>
 							    	</div>
 						    		<ul id="range-div" {if $act_range_ext}style="display:block;"{/if}>

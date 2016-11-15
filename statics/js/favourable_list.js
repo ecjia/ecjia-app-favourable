@@ -53,6 +53,7 @@
             $("#search").on('click', function () {
                 var keyword = document.forms['theForm'].elements['keyword'].value;
                 var act_range = document.forms['theForm'].elements['act_range'].value;
+                var store_id = document.forms['theForm'].elements['store_id'].value;
                 var searchurl = $(this).attr('data-url');
                 $.ajax({
                     url: searchurl,
@@ -60,7 +61,8 @@
                     type: "POST",
                     data: {
                         keyword: keyword,
-                        act_range: act_range
+                        act_range: act_range,
+                        store_id: store_id
                     },
                     success: function (data) {
                         app.favourable_info.searchResponse(data);

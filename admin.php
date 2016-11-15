@@ -146,10 +146,9 @@ class admin extends ecjia_admin {
 	public function insert() {
 		$this->admin_priv('favourable_update' ,ecjia::MSGTYPE_JSON);
 		
-		$act_name = !empty($_POST['act_name']) ? trim($_POST['act_name']) : '';
-		
-		if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->count() > 0) {
-				
+    	$act_name = !empty($_POST['act_name']) ? trim($_POST['act_name']) : '';
+	    $store_id = !empty($_POST['store_id']) ? trim($_POST['store_id']) : 0;
+		if (RC_DB::table('favourable_activity')->where('act_name', $act_name)->where('store_id', $store_id)->count() > 0) {
 			$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
@@ -232,7 +231,6 @@ class admin extends ecjia_admin {
 			'title'		=> RC_Lang::get('favourable::favourable.overview'),
 			'content'	=> '<p>' . RC_Lang::get('favourable::favourable.edit_favourable_help') . '</p>'
 		));
-		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('favourable::favourable.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:优惠活动#.E7.BC.96.E8.BE.91.E4.BC.98.E6.83.A0.E6.B4.BB.E5.8A.A8" target="_blank">'.RC_Lang::get('favourable::favourable.about_edit_favourable').'</a>') . '</p>'
@@ -247,7 +245,6 @@ class admin extends ecjia_admin {
 		if (empty($favourable)) {
 			$this->showmessage(RC_Lang::get('favourable::favourable.favourable_not_exist'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
 		}
-		
 		$this->assign('favourable', $favourable);
 		$this->assign('user_rank_list', $favourable['user_rank_list']);
 		$this->assign('act_range_ext', $favourable['act_range_ext']);
@@ -438,6 +435,7 @@ class admin extends ecjia_admin {
 		
 		$act_range = !empty($_POST['act_range']) ? $_POST['act_range'] : 0;
 		$keyword = !empty($_POST['keyword']) ? trim($_POST['keyword']) : '';
+		$store_id = is_numeric($_POST['store_id']) ? $_POST['store_id'] : '';
 		$where = array();
 		if ($act_range == FAR_ALL) {//全部商品
 			$arr[0] = array(
@@ -473,7 +471,7 @@ class admin extends ecjia_admin {
 			if (!empty($keyword)) {
 				$db_goods->where('goods_name', 'like', '%'.mysql_like_quote($keyword).'%');
 			}
-			$db_goods->where('is_delete', 0);
+			$db_goods->where('is_delete', 0)->where('store_id', $store_id);
 			$arr = $db_goods->get();
 
 			if (!empty($arr)) {
