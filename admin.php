@@ -211,6 +211,11 @@ class admin extends ecjia_admin {
 			$act_type = RC_Lang::get('favourable::favourable.fat_discount');
 		}
 		$act_id = $this->db_favourable_activity->favourable_manage($favourable);
+		/* 释放优惠活动缓存*/
+		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
+		$cache_favourable_key = 'favourable_list_store_'.$store_id;
+		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$favourable_activity_db->delete_cache_item($cache_id);
 		
 		ecjia_admin::admin_log($favourable['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'add', 'favourable');
 		$links[] = array('text' => RC_Lang::get('favourable::favourable.back_favourable_list'), 'href' => RC_Uri::url('favourable/admin/init'));
@@ -333,6 +338,11 @@ class admin extends ecjia_admin {
 			$act_type = RC_Lang::get('favourable::favourable.fat_discount');
 		}
 		$this->db_favourable_activity->favourable_manage($favourable);
+		/* 释放优惠活动缓存*/
+		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
+		$cache_favourable_key = 'favourable_list_store_'.$store_id;
+		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$favourable_activity_db->delete_cache_item($cache_id);
 		
 		ecjia_admin::admin_log($favourable['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'edit', 'favourable');
 		$this->showmessage(RC_Lang::get('favourable::favourable.edit_favourable_ok'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('favourable/admin/edit', array('act_id' => $act_id))));
@@ -362,6 +372,11 @@ class admin extends ecjia_admin {
 		}
 
 		$this->db_favourable_activity->favourable_remove($id);
+		/* 释放优惠活动缓存*/
+		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
+		$cache_favourable_key = 'favourable_list_store_'.$favourable['store_id'];
+		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$favourable_activity_db->delete_cache_item($cache_id);
 		
 		ecjia_admin::admin_log($name.'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'remove', 'favourable');
 		$this->showmessage(RC_Lang::get('favourable::favourable.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -378,6 +393,10 @@ class admin extends ecjia_admin {
 		$info = RC_DB::table('favourable_activity')->whereIn('act_id', $act_ids)->get();
 
 		$this->db_favourable_activity->favourable_remove($act_ids, true);
+		
+		/* 释放优惠活动缓存*/
+		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
+		
 		if (!empty($info)) {
 			foreach ($info as $v) {
 				if ($v['act_type'] == 0) {
@@ -387,6 +406,10 @@ class admin extends ecjia_admin {
 				} else {
 					$act_type = RC_Lang::get('favourable::favourable.fat_discount');
 				}
+				/* 释放优惠活动缓存*/
+				$cache_favourable_key = 'favourable_list_store_'.$v['store_id'];
+				$cache_id = sprintf('%X', crc32($cache_favourable_key));
+				$favourable_activity_db->delete_cache_item($cache_id);
 				ecjia_admin::admin_log($v['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'batch_remove', 'favourable');
 			}
 		}
@@ -415,6 +438,11 @@ class admin extends ecjia_admin {
 					'act_name'	=> $act_name
 				);
 				$this->db_favourable_activity->favourable_manage($data);
+				/* 释放优惠活动缓存*/
+				$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
+				$cache_favourable_key = 'favourable_list_store_'.$store_id;
+				$cache_id = sprintf('%X', crc32($cache_favourable_key));
+				$favourable_activity_db->delete_cache_item($cache_id);
 				$this->showmessage(RC_Lang::get('favourable::favourable.edit_name_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 			} else {
 				$this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
