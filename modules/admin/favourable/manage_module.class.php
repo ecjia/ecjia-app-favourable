@@ -81,6 +81,12 @@ class manage_module extends api_admin implements api_interface {
 		} else {
 			ecjia_admin::admin_log($favourable['act_name'].'，'.'优惠活动方式是 '.$act_type, 'add', 'favourable');
 		}
+		
+		/* 释放缓存*/
+		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
+		$cache_favourable_key = 'favourable_list_store_'.$favourable['store_id'];
+		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$favourable_activity_db->delete_cache_item($cache_id);
 		return array();
 	}
 }
