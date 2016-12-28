@@ -52,9 +52,17 @@ defined ( 'IN_ECJIA' ) or exit ( 'No permission resources.' );
 
 
 function favourable_info($act_id) {
-	$db = RC_Model::model ('favourable/favourable_activity_model');
+// 	$db = RC_Model::model ('favourable/favourable_activity_model');
+    $db = RC_Loader::load_app_model ( 'favourable_activity_model', 'favourable' );
 	
-	$row = $db->find(array('act_id' => $act_id));
+    if (!empty($_SESSION['store_id'])){
+        $row = $db->find ( array (
+            'act_id' => $act_id,
+            'store_id' => $_SESSION['store_id']
+        ) );
+    } else {
+        $row = $db->find(array('act_id' => $act_id));
+    }
 	if (! empty ( $row )) {
 		$row ['start_time'] = RC_Time::local_date ( ecjia::config ( 'time_format' ), $row ['start_time'] );
 		$row ['end_time'] = RC_Time::local_date ( ecjia::config ( 'time_format' ), $row ['end_time'] );

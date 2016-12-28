@@ -20,6 +20,10 @@ class favourable_favourable_list_api extends Component_Event_Api {
     		$favourable_activity_dbview->leftJoin('store_franchisee as s', RC_DB::raw('fa.store_id'), '=', RC_DB::raw('s.store_id'))->selectRaw('fa.*, s.merchants_name');
     	}
     	
+    	if (!empty($_SESSION['store_id']) && $_SESSION['store_id'] > 0) {
+    	    $favourable_activity_dbview->where(RC_DB::raw('fa.store_id'), $_SESSION['store_id']);
+    	}
+    	
     	if (isset($options['keyword']) && !empty($options['keyword'])) {
     		$favourable_activity_dbview->where('act_name', 'like', '%' . $options['keyword'] . '%');
     	}
