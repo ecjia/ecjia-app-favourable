@@ -488,7 +488,7 @@ class admin extends ecjia_admin {
 			$db_category = RC_DB::table('category')->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'));
 			if (empty($keyword)) {
 				$arr = $db_category->get();
-				RC_Loader::load_app_func('category', 'goods');
+				RC_Loader::load_app_func('admin_category', 'goods');
 				$result = cat_list(0, 0, false);
 				$arr = array();
 				if (!empty($result)) {

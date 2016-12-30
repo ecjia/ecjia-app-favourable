@@ -462,7 +462,7 @@ class merchant extends ecjia_merchant {
 			$db_category = RC_DB::table('merchants_category')->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'));
 			if (empty($keyword)) {
 				$arr = $db_category->get();
-				RC_Loader::load_app_func('merchant', 'goods');
+				RC_Loader::load_app_func('merchant_goods', 'goods');
 				$result = merchant_cat_list(0, 0, false);
 				$arr = array();
 				if (!empty($result)) {
