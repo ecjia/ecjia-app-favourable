@@ -49,11 +49,6 @@ class merchant extends ecjia_merchant {
 
 		$list = $this->get_favourable_list();
 		$this->assign('favourable_list', $list);
-
-		//$shop_type = RC_Config::load_config('site', 'SHOP_TYPE');
-		//$shop_type = !empty($shop_type) ? $shop_type : 'b2c';
-		//$this->assign('shop_type', $shop_type);
-
 		$this->assign('search_action', RC_Uri::url('favourable/merchant/init'));
 
 		$this->display('favourable_list.dwt');
@@ -154,15 +149,6 @@ class merchant extends ecjia_merchant {
 		if ($max_amount > 0 && $min_amount > $max_amount) {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.amount_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-
-		/* 取得赠品 */
-// 		$gift = array();
-// 		if (intval($_POST['act_type']) == FAT_GOODS && isset($_POST['gift_id'])) {
-// 			foreach ($_POST['gift_id'] as $key => $id) {
-// 				$gift[] = array('id' => $id, 'name' => $_POST['gift_name'][$key], 'price' => $_POST['gift_price'][$key]);
-// 			}
-// 		}
-
 		/* 提交值 */
 		$favourable = array(
 			'act_name'      => $act_name,
@@ -175,16 +161,8 @@ class merchant extends ecjia_merchant {
 			'max_amount'    => $max_amount,
 			'act_type'      => intval($_POST['act_type']),
 			'act_type_ext'  => floatval($_POST['act_type_ext']),
-// 			'gift'          => serialize($gift),
 			'store_id'		=> !empty($_SESSION['store_id']) ? $_SESSION['store_id'] : 0,
 		);
-
-// 		if ($favourable['act_type'] == FAT_GOODS) {
-// 			$favourable['act_type_ext'] = round($favourable['act_type_ext']);
-// 		}
-// 		if ($favourable['act_type'] == 0) {
-// 			$act_type = RC_Lang::get('favourable::favourable.fat_goods');
-// 		} elseif ($favourable['act_type'] == 1) {
 
         if ($favourable['act_type'] == 1) {
 			$act_type = RC_Lang::get('favourable::favourable.fat_price');
@@ -213,17 +191,6 @@ class merchant extends ecjia_merchant {
 		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
 
 		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.edit_favourable')));
-		//ecjia_merchant_screen::get_current_screen()->add_help_tab(array(
-		//	'id'		=> 'overview',
-		//	'title'		=> RC_Lang::get('favourable::favourable.overview'),
-		//	'content'	=> '<p>' . RC_Lang::get('favourable::favourable.edit_favourable_help') . '</p>'
-		//));
-
-		//ecjia_merchant_screen::get_current_screen()->set_help_sidebar(
-		//	'<p><strong>' . RC_Lang::get('favourable::favourable.more_info') . '</strong></p>' .
-		//	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:优惠活动#.E7.BC.96.E8.BE.91.E4.BC.98.E6.83.A0.E6.B4.BB.E5.8A.A8" target="_blank">'.RC_Lang::get('favourable::favourable.about_edit_favourable').'</a>') . '</p>'
-		//);
-
 		$this->assign('ur_here', RC_Lang::get('favourable::favourable.edit_favourable'));
 		$this->assign('action_link', array('text' => RC_Lang::get('favourable::favourable.favourable_list'), 'href' => RC_Uri::url('favourable/merchant/init')));
 
@@ -285,14 +252,6 @@ class merchant extends ecjia_merchant {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.amount_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		/* 取得赠品 */
-// 		$gift = array();
-// 		if (intval($_POST['act_type']) == FAT_GOODS && isset($_POST['gift_id'])) {
-// 			foreach ($_POST['gift_id'] as $key => $id) {
-// 				$gift[] = array('id' => $id, 'name' => $_POST['gift_name'][$key], 'price' => $_POST['gift_price'][$key]);
-// 			}
-// 		}
-
 		/* 提交值 */
 		$favourable = array(
 			'act_id'		=> $act_id,
@@ -306,16 +265,7 @@ class merchant extends ecjia_merchant {
 			'max_amount'    => $max_amount,
 			'act_type'      => intval($_POST['act_type']),
 			'act_type_ext'  => floatval($_POST['act_type_ext']),
-// 			'gift'          => serialize($gift)
 		);
-
-// 		if ($favourable['act_type'] == FAT_GOODS) {
-// 			$favourable['act_type_ext'] = round($favourable['act_type_ext']);
-// 		}
-// 		if ($favourable['act_type'] == 0) {
-// 			$act_type = RC_Lang::get('favourable::favourable.fat_goods');
-// 		} elseif ($favourable['act_type'] == 1) {
-
         if ($favourable['act_type'] == 1) {
 			$act_type = RC_Lang::get('favourable::favourable.fat_price');
         } elseif ($favourable['act_type'] == 2) {
@@ -476,12 +426,6 @@ class merchant extends ecjia_merchant {
 			} else {
 				$arr = $db_category->where('cat_name', 'like', '%'.mysql_like_quote($keyword).'%')->get();
 			}
-// 		} elseif ($act_range == FAR_BRAND) {//按品牌选择
-// 			$db_brand = RC_DB::table('brand')->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'));
-// 			if (!empty($keyword)) {
-// 				$db_brand->where('brand_name', 'like', '%'.mysql_like_quote($keyword).'%');
-// 			}
-// 			$arr = $db_brand->get();
 		} else {
 			$db_goods = RC_DB::table('goods')->where('store_id', $_SESSION['store_id'])->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'));
 			if (!empty($keyword)) {

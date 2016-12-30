@@ -59,12 +59,6 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		$filter['sort_order'] = empty($filter['sort_order']) ? 'DESC' : trim($filter['sort_order']);
 		
 		$join = null;
-		/* 判断是否是b2b2c*/
-		//$result_app = ecjia_app::validate_application('seller');
-		//$is_active = ecjia_app::is_active('ecjia.seller');
-		//if (!is_ecjia_error($result_app) && $is_active) {
-		//	$join = array('seller_shopinfo');
-		//}
 		
 		$count = $this->where($where)->join(null)->count();
 		//实例化分页
@@ -86,11 +80,9 @@ class favourable_activity_viewmodel extends Component_Model_View {
 	
 	/*获取商家活动列表*/
 	public function seller_activity_list($options) {
-		//$record_count = $this->join(array('seller_shopinfo'))->where($options)->count();
 		$record_count = $this->join(array('store_franchisee'))->where($options)->count();
 		//实例化分页
 		$page_row = new ecjia_page($record_count, $options['size'], 6, '', $options['page']);
-		//$res = $this->join(array('seller_shopinfo'))->where($options['where'])->field('ssi.shop_name, ssi.logo_thumb,fa.*')->limit($page_row->limit())->select();
 		$res = $this->join(array('store_franchisee'))->where($options['where'])->field('ssi.merchants_name,fa.*')->limit($page_row->limit())->select();
 		return array('favourable_list' => $res, 'page' => $page_row);
 	}
