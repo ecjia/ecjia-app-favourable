@@ -6,6 +6,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
+ 
 class delete_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
@@ -53,11 +54,13 @@ class delete_module extends api_admin implements api_interface {
 		}
 		
 		/* 释放缓存*/
-		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-		$cache_favourable_key = 'favourable_list_store_'.$favourable['store_id'];
-		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$favourable_activity_db   = RC_Model::model('favourable/orm_favourable_activity_model');
+		$cache_favourable_key     = 'favourable_list_store_'.$favourable['store_id'];
+		$cache_id                 = sprintf('%X', crc32($cache_favourable_key));
+		
 		$favourable_activity_db->delete_cache_item($cache_id);
 		return array();
 	}
 }
+
 // end

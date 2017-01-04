@@ -1,8 +1,10 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 优惠活动
  */
+ 
 return array(
 	'identifier' 	=> 'ecjia.favourable',
 	'directory' 	=> 'favourable',
@@ -13,4 +15,5 @@ return array(
 	'version' 		=> '1.3.0',					/* 版本号 */
 	'copyright' 	=> 'ECJIA Copyright 2014.' 
 );
+
 // end

@@ -1,10 +1,11 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 管理中心优惠活动管理
  * @author songqian
  *
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class merchant extends ecjia_merchant {
 	private $db_favourable_activity;
@@ -79,17 +80,17 @@ class merchant extends ecjia_merchant {
 		);
 		$this->assign('favourable', $favourable);
 
-		$user_rank_list = array();
+		$user_rank_list   = array();
 		$user_rank_list[] = array(
-			'rank_id'   => 0,
-			'rank_name' => RC_Lang::get('favourable::favourable.not_user'),
-			'checked'   => strpos(',' . $favourable['user_rank'] . ',', ',0,') !== false
+    			'rank_id'   => 0,
+    			'rank_name' => RC_Lang::get('favourable::favourable.not_user'),
+    			'checked'   => strpos(',' . $favourable['user_rank'] . ',', ',0,') !== false
 		);
 		$data = RC_DB::table('user_rank')->select('rank_id', 'rank_name')->get();
 
 		if (!empty($data)) {
 			foreach ($data as $key => $row) {
-				$row['checked'] = strpos(',' . $favourable['user_rank'] . ',', ',' . $key. ',') !== false;
+				$row['checked']   = strpos(',' . $favourable['user_rank'] . ',', ',' . $key. ',') !== false;
 				$user_rank_list[] = $row;
 			}
 		}
@@ -100,11 +101,21 @@ class merchant extends ecjia_merchant {
 		if ($favourable['act_range'] != FAR_ALL && !empty($favourable['act_range_ext'])) {
 			$favourable['act_range_ext'] = explode(',', $favourable['act_range_ext']);
 			if ($favourable['act_range'] == FAR_CATEGORY) {
-				$act_range_ext = RC_DB::table('category')->whereIn('cat_id', $favourable['act_range_ext'])->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'))->get();
+				$act_range_ext = RC_DB::table('category')
+                				->whereIn('cat_id', $favourable['act_range_ext'])
+                				->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'))
+                				->get();
 			} elseif ($favourable['act_range'] == FAR_BRAND) {
-				$act_range_ext = RC_DB::table('brand')->whereIn('brand_id', $favourable['act_range_ext'])->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'))->get();
+				$act_range_ext = RC_DB::table('brand')
+                				->whereIn('brand_id', $favourable['act_range_ext'])
+                				->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'))
+                				->get();
 			} else {
-				$act_range_ext = RC_DB::table('goods')->whereIn('goods_id', $favourable['act_range_ext'])->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'))->get();
+				$act_range_ext = RC_DB::table('goods')
+                				->whereIn('goods_id', $favourable['act_range_ext'])
+                				->where(RC_DB::raw('store_id'), $_SESSION['store_id'])
+                				->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'))
+                				->get();
 			}
 		}
 
@@ -127,8 +138,8 @@ class merchant extends ecjia_merchant {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.act_name_exists'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '';
-		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '';
+		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time'])   : '';
+		$end_time   = !empty($_POST['end_time'])   ? RC_Time::local_strtotime($_POST['end_time'])     : '';
 
 		if ($start_time >= $end_time) {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.start_lt_end'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -173,8 +184,8 @@ class merchant extends ecjia_merchant {
 		
 		/* 释放优惠活动缓存*/
 		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-		$cache_favourable_key = 'favourable_list_store_'.$store_id;
-		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$cache_favourable_key   = 'favourable_list_store_'.$store_id;
+		$cache_id               = sprintf('%X', crc32($cache_favourable_key));
 		$favourable_activity_db->delete_cache_item($cache_id);
 
 		ecjia_merchant::admin_log($favourable['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'add', 'favourable');
@@ -194,7 +205,7 @@ class merchant extends ecjia_merchant {
 		$this->assign('ur_here', RC_Lang::get('favourable::favourable.edit_favourable'));
 		$this->assign('action_link', array('text' => RC_Lang::get('favourable::favourable.favourable_list'), 'href' => RC_Uri::url('favourable/merchant/init')));
 
-		$id = !empty($_GET['act_id']) ? intval($_GET['act_id']) : 0;
+		$id         = !empty($_GET['act_id']) ? intval($_GET['act_id']) : 0;
 		$favourable = $this->db_favourable_activity->favourable_info($id);
 
 		if (empty($favourable)) {
@@ -275,8 +286,8 @@ class merchant extends ecjia_merchant {
 		
 		/* 释放优惠活动缓存*/
 		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-		$cache_favourable_key = 'favourable_list_store_'.$store_id;
-		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$cache_favourable_key   = 'favourable_list_store_'.$store_id;
+		$cache_id               = sprintf('%X', crc32($cache_favourable_key));
 		$favourable_activity_db->delete_cache_item($cache_id);
 
 		ecjia_merchant::admin_log($favourable['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'edit', 'favourable');
@@ -289,13 +300,13 @@ class merchant extends ecjia_merchant {
 	public function remove() {
 		$this->admin_priv('favourable_delete', ecjia::MSGTYPE_JSON);
 
-		$id = intval($_GET['act_id']);
+		$id         = intval($_GET['act_id']);
 		$favourable = $this->db_favourable_activity->favourable_info($id);
 		if (empty($favourable)) {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.favourable_not_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		$name = $favourable['act_name'];
+		$name     = $favourable['act_name'];
 		$act_type = $favourable['act_type'];
 
 		if ($act_type == 0) {
@@ -309,8 +320,8 @@ class merchant extends ecjia_merchant {
 		$this->db_favourable_activity->favourable_remove($id);
 		/*释放优惠活动缓存*/
 		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-		$cache_favourable_key = 'favourable_list_store_'.$_SESSION['store_id'];
-		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$cache_favourable_key   = 'favourable_list_store_'.$_SESSION['store_id'];
+		$cache_id               = sprintf('%X', crc32($cache_favourable_key));
 		$favourable_activity_db->delete_cache_item($cache_id);
 
 		ecjia_merchant::admin_log($name.'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'remove', 'favourable');
@@ -323,9 +334,9 @@ class merchant extends ecjia_merchant {
 	public function batch() {
 		$this->admin_priv('favourable_delete', ecjia::MSGTYPE_JSON);
 
-		$ids = $_POST['act_id'];
-		$act_ids = explode(',', $ids);
-		$info = RC_DB::table('favourable_activity')->whereIn('act_id', $act_ids)->get();
+		$ids      = $_POST['act_id'];
+		$act_ids  = explode(',', $ids);
+		$info     = RC_DB::table('favourable_activity')->whereIn('act_id', $act_ids)->get();
 
 		$this->db_favourable_activity->favourable_remove($act_ids, true);
 		if (!empty($info)) {
@@ -339,8 +350,9 @@ class merchant extends ecjia_merchant {
 				}
 				/*释放优惠活动缓存*/
 				$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-				$cache_favourable_key = 'favourable_list_store_'.$v['store_id'];
-				$cache_id = sprintf('%X', crc32($cache_favourable_key));
+				$cache_favourable_key   = 'favourable_list_store_'.$v['store_id'];
+				$cache_id               = sprintf('%X', crc32($cache_favourable_key));
+				
 				$favourable_activity_db->delete_cache_item($cache_id);
 				ecjia_merchant::admin_log($v['act_name'].'，'.RC_Lang::get('favourable::favourable.favourable_way_is').$act_type, 'batch_remove', 'favourable');
 			}
@@ -366,8 +378,9 @@ class merchant extends ecjia_merchant {
 				$this->db_favourable_activity->favourable_manage($data);
 				/*释放优惠活动缓存*/
 				$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-				$cache_favourable_key = 'favourable_list_store_'.$_SESSION['store_id'];
-				$cache_id = sprintf('%X', crc32($cache_favourable_key));
+				$cache_favourable_key   = 'favourable_list_store_'.$_SESSION['store_id'];
+				$cache_id               = sprintf('%X', crc32($cache_favourable_key));
+				
 				$favourable_activity_db->delete_cache_item($cache_id);
 				return $this->showmessage(RC_Lang::get('favourable::favourable.edit_name_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 			} else {
@@ -400,8 +413,8 @@ class merchant extends ecjia_merchant {
 	public function search() {
 		$this->admin_priv('favourable_manage', ecjia::MSGTYPE_JSON);
 
-		$act_range = !empty($_POST['act_range']) ? $_POST['act_range'] : 0;
-		$keyword = !empty($_POST['keyword']) ? trim($_POST['keyword']) : '';
+		$act_range = !empty($_POST['act_range']) ? $_POST['act_range']     : 0;
+		$keyword   = !empty($_POST['keyword'])   ? trim($_POST['keyword']) : '';
 		$where = array();
 		if ($act_range == FAR_ALL) {//全部商品
 			$arr[0] = array(
@@ -436,7 +449,7 @@ class merchant extends ecjia_merchant {
 			if (!empty($arr)) {
 				foreach ($arr as $key => $row) {
 					$arr[$key]['name'] = stripslashes($row['name']);
-					$arr[$key]['url'] = RC_Uri::url('goods/merchant/preview', 'id='.$row['id']);
+					$arr[$key]['url']  = RC_Uri::url('goods/merchant/preview', 'id='.$row['id']);
 				}
 			}
 		}
@@ -482,16 +495,16 @@ class merchant extends ecjia_merchant {
 		} else {
 			$page = new ecjia_merchant_page($favourable_count['count'], 15, 5);
 		}
-		$filter['skip'] = $page->start_id-1;
-		$filter['limit'] = 15;
-		$data = RC_Api::api('favourable', 'favourable_list', $filter);
+		$filter['skip']   = $page->start_id-1;
+		$filter['limit']  = 15;
+		$data             = RC_Api::api('favourable', 'favourable_list', $filter);
 
 		$list = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
 				$row['start_time']  = RC_Time::local_date('Y-m-d H:i', $row['start_time']);
 				$row['end_time']    = RC_Time::local_date('Y-m-d H:i', $row['end_time']);
-				$list[] = $row;
+				$list[]             = $row;
 			}
 		}
 		return array('item' => $list, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'count' => $favourable_count, 'quickuri' => $quickuri);

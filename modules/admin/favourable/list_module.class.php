@@ -6,6 +6,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
+ 
 class list_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 		$this->authadminSession();
@@ -20,8 +21,8 @@ class list_module extends api_admin implements api_interface {
 		}
 		
 		$status = $this->requestData('status', 'coming');
-		$size = $this->requestData('pagination.count', 15);
-		$page = $this->requestData('pagination.page', 1);
+		$size   = $this->requestData('pagination.count', 15);
+		$page   = $this->requestData('pagination.page', 1);
 		
 		$filter = array(
 			'status' => $status,
@@ -33,10 +34,10 @@ class list_module extends api_admin implements api_interface {
 		$filter['store_id'] = $_SESSION['store_id'];
 		
 		$result = RC_Model::model('favourable/favourable_activity_viewmodel')->favourable_list($filter);
-		$data = array();
+		$data   = array();
 		if (!empty($result['item'])) {
 			/* 取得用户等级 */
-			$db_user_rank = RC_Model::model('user/user_rank_model');
+			$db_user_rank   = RC_Model::model('user/user_rank_model');
 			$user_rank_list = $db_user_rank->field('rank_id, rank_name')->select();
 			foreach ($result['item'] as $key => $val) {
 				$rank_name = array();
@@ -52,16 +53,16 @@ class list_module extends api_admin implements api_interface {
 					}
 				}
 				$act_type = $val['act_type'] == 1 || $val['act_type'] == 2 ? $val['act_type'] == 1 ? '满'.$val['min_amount'].'减'.$val['act_type_ext'] : '满'.$val['min_amount'].'享受'.($val['act_type_ext']/10).'折' : __('享受赠品（特惠品）');
-				$data[] = array(
-					'act_id'	=> $val['act_id'],
-					'act_name'	=> $val['act_name'],
-					'label_act_type'	=> $act_type,
-					'rank_name'		=> $rank_name,
-					'max_amount'	=> $val['max_amount'],
+				$data[]   = array(
+					'act_id'	            => $val['act_id'],
+					'act_name'	            => $val['act_name'],
+					'label_act_type'	    => $act_type,
+					'rank_name'		        => $rank_name,
+					'max_amount'	        => $val['max_amount'],
 					'formatted_start_time'	=> $val['start_time'],
 					'formatted_end_time'	=> $val['end_time'],
-					'seller_id'		=> !empty($val['store_id']) ? $val['store_id'] : 0,
-					'seller_name'	=> !empty($val['merchants_name']) ? $val['merchants_name'] : '自营', 
+					'seller_id'		        => !empty($val['store_id']) ? $val['store_id'] : 0,
+					'seller_name'	        => !empty($val['merchants_name']) ? $val['merchants_name'] : '自营', 
 				);
 			}
 		}
@@ -74,4 +75,5 @@ class list_module extends api_admin implements api_interface {
 		return array('data' => $data, 'pager' => $pager);
 	}
 }
+
 // end

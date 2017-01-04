@@ -92,7 +92,7 @@ class favourable_activity_model extends Component_Model_Model {
 			$data = RC_DB::table('user_rank')->select('rank_id', 'rank_name')->get();
 			if (!empty($data)) {
 				foreach ($data as $row) {
-					$row['checked'] = strpos(',' . $favourable['user_rank'] . ',', ',' . $row['rank_id']. ',') !== false;
+					$row['checked']                 = strpos(',' . $favourable['user_rank'] . ',', ',' . $row['rank_id']. ',') !== false;
 					$favourable['user_rank_list'][] = $row;
 				}
 			}
@@ -102,13 +102,22 @@ class favourable_activity_model extends Component_Model_Model {
 			if ($favourable['act_range'] != FAR_ALL && !empty($favourable['act_range_ext'])) {
 				$favourable['act_range_ext'] = explode(',', $favourable['act_range_ext']);
 				if ($favourable['act_range'] == FAR_CATEGORY) {
-					$act_range_ext = RC_DB::table('category')->whereIn('cat_id', $favourable['act_range_ext'])->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'))->get();
+					$act_range_ext = RC_DB::table('category')
+                					->whereIn('cat_id', $favourable['act_range_ext'])
+                					->select(RC_DB::raw('cat_id as id'), RC_DB::raw('cat_name as name'))
+                					->get();
 
 				} elseif ($favourable['act_range'] == FAR_BRAND) {
 					/* 区分入驻商及平台*/
-					$act_range_ext = RC_DB::table('brand')->whereIn('brand_id', $favourable['act_range_ext'])->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'))->get();
+					$act_range_ext = RC_DB::table('brand')
+                					->whereIn('brand_id', $favourable['act_range_ext'])
+                					->select(RC_DB::raw('brand_id as id'), RC_DB::raw('brand_name as name'))
+                					->get();
 				} else {
-					$act_range_ext = RC_DB::table('goods')->whereIn('goods_id', $favourable['act_range_ext'])->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'), RC_DB::raw('shop_price'))->get();
+					$act_range_ext = RC_DB::table('goods')
+                					->whereIn('goods_id', $favourable['act_range_ext'])
+                					->select(RC_DB::raw('goods_id as id'), RC_DB::raw('goods_name as name'), RC_DB::raw('shop_price'))
+                					->get();
 				}
 			}
 			if(!empty($act_range_ext) && is_array($act_range_ext)){

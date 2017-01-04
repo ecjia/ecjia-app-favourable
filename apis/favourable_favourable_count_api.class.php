@@ -1,11 +1,13 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 获取商家活动总数
  * @author zrl
  * @param   array	 $options（包含经纬度，当前页码，每页显示条数）
  * @return  array   商家活动数组
  */
+ 
 class favourable_favourable_count_api extends Component_Event_Api {
     
     public function call(&$options) {
