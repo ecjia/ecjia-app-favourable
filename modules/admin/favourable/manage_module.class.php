@@ -6,6 +6,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
+ 
 class manage_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
@@ -21,9 +22,10 @@ class manage_module extends api_admin implements api_interface {
 		
 		RC_Loader::load_app_class('favourable', 'favourable', false);
 		
-		$act_id = $this->requestData('act_id', 0);
-		$user_rank = $this->requestData('user_rank');
-		$gift = $this->requestData('gift', array());
+		$act_id       = $this->requestData('act_id', 0);
+		$user_rank    = $this->requestData('user_rank');
+		$gift         = $this->requestData('gift', array());
+		
 		$favourable = array(
 			'act_name'      => $this->requestData('act_name'),
 			'start_time'    => RC_Time::local_strtotime($this->requestData('start_time')),
@@ -90,11 +92,13 @@ class manage_module extends api_admin implements api_interface {
 		}
 		
 		/* 释放缓存*/
-		$favourable_activity_db = RC_Model::model('favourable/orm_favourable_activity_model');
-		$cache_favourable_key = 'favourable_list_store_'.$favourable['store_id'];
-		$cache_id = sprintf('%X', crc32($cache_favourable_key));
+		$favourable_activity_db   = RC_Model::model('favourable/orm_favourable_activity_model');
+		$cache_favourable_key     = 'favourable_list_store_'.$favourable['store_id'];
+		$cache_id                 = sprintf('%X', crc32($cache_favourable_key));
+		
 		$favourable_activity_db->delete_cache_item($cache_id);
 		return array();
 	}
 }
+
 // end

@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 获取商家活动列表
  * @author zrl
  * 
  */
+ 
 class list_module extends api_front implements api_interface {
 	
 	 public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
@@ -27,26 +29,25 @@ class list_module extends api_front implements api_interface {
 // 		TODO::待增加
 		$geohash_code = '';
 		
-		$options = array('location' => $location, 'page' => $page, 'size' => $size, 'where' => $where);
+		$options                = array('location' => $location, 'page' => $page, 'size' => $size, 'where' => $where);
 		$where['sort_by']    	= 'act_id';
 		$where['sort_order'] 	= 'DESC';
-		$cache_id = sprintf('%X', crc32($geohash_code . '-' . page  .'-' . $size  . '-' . $where ));
+		$cache_id               = sprintf('%X', crc32($geohash_code . '-' . page  .'-' . $size  . '-' . $where ));
 		
-		$cache_key = 'favourable_list_'.$cache_id;
-		$data = RC_Cache::app_cache_get($cache_key, 'favourable');
+		$cache_key              = 'favourable_list_'.$cache_id;
+		$data                   = RC_Cache::app_cache_get($cache_key, 'favourable');
 		if (empty($data)) {
-			$count = RC_Api::api('favourable', 'favourable_count', $where);
+			$count           = RC_Api::api('favourable', 'favourable_count', $where);
 			
-			$page_row = new ecjia_page($count, $size, 6, '', $page);
-			$where['skip']	= $page_row->start_id-1;
-			$where['limit']	= $size;
+			$page_row        = new ecjia_page($count, $size, 6, '', $page);
+			$where['skip']	 = $page_row->start_id-1;
+			$where['limit']	 = $size;
 			$favourable_list = RC_Api::api('favourable', 'favourable_list', $where);
 			
-			
-			$data['pager'] = array(
-					'total' => $page_row->total_records,
-					'count' => $page_row->total_records,
-					'more'	=> $page_row->total_pages <= $page ? 0 : 1,
+			$data['pager']   = array(
+    					'total' => $page_row->total_records,
+    					'count' => $page_row->total_records,
+    					'more'	=> $page_row->total_pages <= $page ? 0 : 1,
 			);
 			$data['list'] = array();
 			if (!empty($favourable_list)) {
@@ -66,4 +67,5 @@ class list_module extends api_front implements api_interface {
 		return array('data' => $data['list'], 'pager' => $data['pager']);
 	 }	
 }
+
 // end

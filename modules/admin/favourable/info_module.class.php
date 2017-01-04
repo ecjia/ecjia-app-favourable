@@ -6,6 +6,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will
  *
  */
+ 
 class info_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
@@ -92,12 +93,12 @@ class info_module extends api_admin implements api_interface {
 						$image = $info['original_img'];
 					}
 					$result['gift_items'][] = array(
-							'id'	=> $val['id'],
-							'name'	=> $info['goods_name'],
-							'shop_price' => $info['shop_price'],
-							'formatted_shop_price' => price_format($info['shop_price']),
-							'price' => $val['price'],
-							'image' => $image,
+							'id'	                 => $val['id'],
+							'name'	                 => $info['goods_name'],
+							'shop_price'             => $info['shop_price'],
+							'formatted_shop_price'   => price_format($info['shop_price']),
+							'price'                  => $val['price'],
+							'image'                  => $image,
 					);
 				}
 			}
@@ -108,7 +109,7 @@ class info_module extends api_admin implements api_interface {
 		}
 			
 		$result['formatted_start_time'] = $result['start_time'];
-		$result['formatted_end_time'] = $result['end_time'];
+		$result['formatted_end_time']   = $result['end_time'];
 			
 		/* 去除不要的字段*/
 		unset($result['start_time']);
@@ -119,4 +120,5 @@ class info_module extends api_admin implements api_interface {
 		return $result;
 	}
 }
+
 // end
