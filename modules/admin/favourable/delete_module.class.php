@@ -46,6 +46,7 @@ class delete_module extends api_admin implements api_interface {
 		
 		$result = RC_Model::model('favourable/favourable_activity_model')->favourable_remove($id);
 		if ($_SESSION['store_id'] > 0) {
+		    RC_Loader::load_app_class('ecjia_merchant', 'merchant');
 		    ecjia_merchant::admin_log($name.'，'.'优惠活动方式是 '.$act_type.'【来源掌柜】', 'remove', 'favourable');
 		} else {
 		    ecjia_admin::admin_log($name.'，'.'优惠活动方式是 '.$act_type.'【来源掌柜】', 'remove', 'favourable');

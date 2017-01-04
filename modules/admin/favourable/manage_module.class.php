@@ -84,6 +84,7 @@ class manage_module extends api_admin implements api_interface {
 		$log_text = $favourable['act_name'].'，'.'优惠活动方式是 '.$act_type;
 		
 		if ($_SESSION['store_id'] > 0) {
+		    RC_Loader::load_app_class('ecjia_merchant', 'merchant');
 		    ecjia_merchant::admin_log($log_text, $log_action, 'favourable');
 		} else {
 		    ecjia_admin::admin_log($log_text, $log_action, 'favourable');
