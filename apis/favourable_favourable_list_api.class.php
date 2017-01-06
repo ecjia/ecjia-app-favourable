@@ -6,7 +6,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author zrl
  * 购物车有调用 by hyy
  */
- 
 class favourable_favourable_list_api extends Component_Event_Api {
     
     public function call(&$options) {

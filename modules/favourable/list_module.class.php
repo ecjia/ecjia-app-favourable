@@ -4,9 +4,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 获取商家活动列表
  * @author zrl
- * 
  */
- 
 class list_module extends api_front implements api_interface {
 	
 	 public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
@@ -53,12 +51,12 @@ class list_module extends api_front implements api_interface {
 			if (!empty($favourable_list)) {
 				foreach ($favourable_list as $key => $row) {
 					$data['list'][] = array(
-							'seller_id'				=> 	$row['seller_id'],
-							'seller_name'			=>  $row['merchants_name'],
-							'seller_logo'			=>  '',//TODO::待做
-							'favourable_name'		=>  $row['act_name'],
-							'favourable_type'		=>  ($row['act_type'] == 1 || $row['act_type'] == 2) ?  $row['act_type'] == 1 ? 'price_reduction' : 'price_discount' : 'premiums',
-							'label_favourable_type' =>  ($row['act_type'] == 1 || $row['act_type'] == 2) ? $row['act_type'] == 1 ? '满'.$row['min_amount'].'减'.$row['act_type_ext'] : '满'.$row['min_amount'].'享受'.($row['act_type_ext']/10).'折' : __('享受赠品（特惠品）'),
+						'seller_id'				=> 	$row['seller_id'],
+						'seller_name'			=>  $row['merchants_name'],
+						'seller_logo'			=>  '',//TODO::待做
+						'favourable_name'		=>  $row['act_name'],
+						'favourable_type'		=>  ($row['act_type'] == 1 || $row['act_type'] == 2) ?  $row['act_type'] == 1 ? 'price_reduction' : 'price_discount' : 'premiums',
+						'label_favourable_type' =>  ($row['act_type'] == 1 || $row['act_type'] == 2) ? $row['act_type'] == 1 ? '满'.$row['min_amount'].'减'.$row['act_type_ext'] : '满'.$row['min_amount'].'享受'.($row['act_type_ext']/10).'折' : __('享受赠品（特惠品）'),
 					);
 				}
 			}

@@ -5,7 +5,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 获取商家优惠活动
  * @author zrl
  */
- 
 class favourable_store_favourable_list_api extends Component_Event_Api {
     
     public function call(&$options) {
@@ -21,9 +20,9 @@ class favourable_store_favourable_list_api extends Component_Event_Api {
     	$favourable_list        = $favourable_activity_db->get_cache_item($cache_id);
     	if (empty($favourable_list)) {
     		$favourable_list = $db_favourable
-                    		->where(array('store_id' => $options['store_id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))
-                    		->select();
-    		 $favourable_activity_db->set_cache_item($cache_id, $favourable_list);
+          		->where(array('store_id' => $options['store_id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))
+         		->select();
+			$favourable_activity_db->set_cache_item($cache_id, $favourable_list);
     	}
     	return $favourable_list;
     }

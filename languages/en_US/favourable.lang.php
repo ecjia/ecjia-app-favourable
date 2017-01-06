@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 管理中心优惠活动语言文件
  */
-
 return array(
 	/* menu */
 	'favourable_list' 			=> 'Favourable List',

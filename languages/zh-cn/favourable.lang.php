@@ -2,9 +2,8 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECSHOP 管理中心优惠活动语言文件
+ * ECJIA 管理中心优惠活动语言文件
  */
-
 /* menu */
 $LANG['favourable_list']            = '优惠活动列表';
 $LANG['add_favourable']             = '添加优惠活动';

@@ -4,9 +4,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 管理中心优惠活动管理
  * @author songqian
- * 
  */
-
 class admin extends ecjia_admin {
 	private $db_favourable_activity;
 	

@@ -65,10 +65,10 @@ class favourable_activity_viewmodel extends Component_Model_View {
 		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
 		
 		$res = $this->join(array('store_franchisee'))
-            		->field(array('fa.*', 'ssi.merchants_name'))
-            		->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))
-            		->limit($page_row->limit())
-            		->select();
+            ->field(array('fa.*', 'ssi.merchants_name'))
+            ->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))
+            ->limit($page_row->limit())
+            ->select();
 		
 		$list = array();
 		if (!empty($res)) {

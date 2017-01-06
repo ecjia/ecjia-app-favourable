@@ -4,9 +4,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 管理中心优惠活动管理
  * @author songqian
- *
  */
-
 class merchant extends ecjia_merchant {
 	private $db_favourable_activity;
 

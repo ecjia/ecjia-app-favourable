@@ -13,11 +13,9 @@ class favourable_installer  extends ecjia_installer {
         parent::__construct($id);
     }
     
-    
     public function install() {
         
     }
-    
     
     public function uninstall() {
         

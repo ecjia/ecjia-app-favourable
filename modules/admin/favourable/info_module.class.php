@@ -4,9 +4,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 满减满赠活动信息
  * @author will
- *
  */
- 
 class info_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     		
@@ -93,12 +91,12 @@ class info_module extends api_admin implements api_interface {
 						$image = $info['original_img'];
 					}
 					$result['gift_items'][] = array(
-							'id'	                 => $val['id'],
-							'name'	                 => $info['goods_name'],
-							'shop_price'             => $info['shop_price'],
-							'formatted_shop_price'   => price_format($info['shop_price']),
-							'price'                  => $val['price'],
-							'image'                  => $image,
+						'id'	                 => $val['id'],
+						'name'	                 => $info['goods_name'],
+						'shop_price'             => $info['shop_price'],
+						'formatted_shop_price'   => price_format($info['shop_price']),
+						'price'                  => $val['price'],
+						'image'                  => $image,
 					);
 				}
 			}

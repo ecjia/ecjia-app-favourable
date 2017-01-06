@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 满减满赠活动列表
  * @author will
- *
  */
  
 class list_module extends api_admin implements api_interface {
