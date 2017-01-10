@@ -44,8 +44,8 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
 use Royalcms\Component\Database\Eloquent\Model;
+defined('IN_ECJIA') or exit('No permission resources.');
 
 class orm_favourable_activity_model extends Model {
 	protected $table = 'favourable_activity';
