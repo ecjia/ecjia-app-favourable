@@ -227,6 +227,10 @@ class admin extends ecjia_admin {
 		if ($max_amount > 0 && $min_amount > $max_amount) {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.amount_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
+		
+		if ($_POST['act_type'] == 1 && $_POST['min_amount'] < $_POST['act_type_ext']) {
+		    return $this->showmessage('现金减免不能超过金额下限', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
 		/* 提交值 */
 		$favourable = array(
 			'act_name'      => $act_name,
@@ -343,7 +347,9 @@ class admin extends ecjia_admin {
 		if ($max_amount > 0 && $min_amount > $max_amount) {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.amount_error'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		
+		if ($_POST['act_type'] == 1 && $_POST['min_amount'] < $_POST['act_type_ext']) {
+		    return $this->showmessage('现金减免不能超过金额下限', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
 		/* 提交值 */
 		$favourable = array(
 			'act_id'		=> $act_id,
