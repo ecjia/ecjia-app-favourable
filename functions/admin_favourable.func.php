@@ -49,7 +49,6 @@ defined ( 'IN_ECJIA' ) or exit ( 'No permission resources.' );
 /**
  * 文章及文章分类相关函数库
  */
-
 function favourable_info($act_id) {
     $db = RC_Loader::load_app_model ( 'favourable_activity_model', 'favourable' );
 	
