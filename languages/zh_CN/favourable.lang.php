@@ -168,6 +168,7 @@ return array(
 	'on_going'				=> '正在进行中',
 	'merchants'				=> '商家',
 	'merchant_name'			=> '商家名称',
+	'self'					=> '自营',
 				
 	'overview'				=> '概述',
 	'more_info'				=> '更多信息：',

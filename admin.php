@@ -574,34 +574,34 @@ class admin extends ecjia_admin {
 		$filter['keyword']		 = empty($_GET['keyword']) 	       ? '' 					: mysql_like_quote(trim($_GET['keyword']));
 		$filter['merchant_name'] = empty($_GET['merchant_name'])   ? '' 				    : mysql_like_quote(trim($_GET['merchant_name']));
 		$filter['type'] 	 	 = isset($_GET['type']) 		   ? trim($_GET['type']) 	: '';
-// 		empty($code) ? '' : 'extension_code=' . $code
+
 		/* 连接导航*/
 		$uri = array();
 		empty($filter['merchant_name']) ? '' : $uri['merchant_name']  = $filter['merchant_name'];
 		empty($filter['keyword']) 		? '' : $uri['keyword']        = $filter['keyword'];
 		
 		$quickuri = array(
-			'init'			=> RC_Uri::url('favourable/admin/init', $uri),
-			'on_going'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'on_going'), $uri)),
-			'merchants'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'merchants'), $uri)),
+			'init'		=> RC_Uri::url('favourable/admin/init', $uri),
+			'on_going'	=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'on_going'), $uri)),
+			'self'		=> RC_Uri::url('favourable/admin/init', array_merge(array('type' => 'self'), $uri)),
 		);
 		
 		/* 初始化优惠活动数量*/		
 		$favourable_count = array(
 			'count'		=> 0,//全部
 			'on_going'	=> 0,//进行中
-			'merchants'	=> 0,//商家
+			'self'		=> 0,//商家
 		);
 		
 		$favourable_count['count']		= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name']));
 		$favourable_count['on_going']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'on_going'));
-		$favourable_count['merchants']	= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'merchants'));
+		$favourable_count['self']		= RC_Api::api('favourable', 'favourable_count', array('keyword' => $filter['keyword'], 'merchant_name' => $filter['merchant_name'], 'type' => 'self'));
 		
 			
 		if ($filter['type'] == 'on_going') {
 			$page = new ecjia_page($favourable_count['on_going'], 15, 5);
-		} elseif ($filter['type'] == 'merchants') {
-			$page = new ecjia_page($favourable_count['merchants'], 15, 5);
+		} elseif ($filter['type'] == 'self') {
+			$page = new ecjia_page($favourable_count['self'], 15, 5);
 		} else {
 			$page = new ecjia_page($favourable_count['count'], 15, 5);
 		}

@@ -84,6 +84,8 @@ class favourable_favourable_count_api extends Component_Event_Api {
     		$favourable_activity_dbview->where('start_time', '<=', $time)->where('end_time', '>=', $time);
     	} elseif (isset($options['type']) && $options['type'] == 'merchants') {
     		$favourable_activity_dbview->where(RC_DB::raw('fa.store_id'), '>', 0);
+    	} elseif (isset($options['type']) && $options['type'] == 'self') {
+    		$favourable_activity_dbview->where(RC_DB::raw('s.manage_mode'), 'self');
     	}
     	
     	if (isset($options['store_id']) && !empty($options['store_id'])) {
