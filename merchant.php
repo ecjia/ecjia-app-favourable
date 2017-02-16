@@ -84,7 +84,7 @@ class merchant extends ecjia_merchant {
 	 * 活动列表页
 	 */
 	public function init() {
-		$this->admin_priv('favourable_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('favourable_manage');
 
 		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.favourable_list')));
 		
@@ -103,7 +103,7 @@ class merchant extends ecjia_merchant {
 	 * 添加页面
 	 */
 	public function add() {
-		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('favourable_update');
 
 		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.add_favourable')));
 		$this->assign('ur_here', RC_Lang::get('favourable::favourable.add_favourable'));
@@ -246,7 +246,7 @@ class merchant extends ecjia_merchant {
 	 * 编辑
 	 */
 	public function edit() {
-		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('favourable_update');
 
 		ecjia_merchant_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.edit_favourable')));
 		$this->assign('ur_here', RC_Lang::get('favourable::favourable.edit_favourable'));

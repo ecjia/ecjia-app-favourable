@@ -85,7 +85,7 @@ class admin extends ecjia_admin {
 	 * 活动列表页
 	 */
 	public function init() {
-		$this->admin_priv('favourable_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('favourable_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.favourable_list')));
@@ -118,7 +118,7 @@ class admin extends ecjia_admin {
 	 * 添加页面
 	 */
 	public function add() {
-		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('favourable_update');
 	
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.add_favourable')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -269,7 +269,7 @@ class admin extends ecjia_admin {
 	 * 编辑
 	 */
 	public function edit() {
-		$this->admin_priv('favourable_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('favourable_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('favourable::favourable.edit_favourable')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
