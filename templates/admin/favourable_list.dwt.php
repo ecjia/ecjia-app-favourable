@@ -75,7 +75,7 @@
 		    	  	</div>
 		      	</td>
 		      	<!-- {if $shop_type neq 'b2c'} -->
-		      	<td style="color:red;">{$favourable.merchants_name}</td>
+		      	<td style="color:red;">{if $favourable.merchants_name eq '' }全场通用{else}{$favourable.merchants_name}{/if}</td>
 		      	<!-- {/if} -->
 		      	<td>{$favourable.start_time}</td>
 		      	<td>{$favourable.end_time}</td>
