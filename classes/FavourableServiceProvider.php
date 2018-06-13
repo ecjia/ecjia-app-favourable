@@ -2,9 +2,9 @@
 
 namespace Ecjia\App\Favourable;
 
-use Royalcms\Component\App\AppServiceProvider;
+use Royalcms\Component\App\AppParentServiceProvider;
 
-class FavourableServiceProvider extends  AppServiceProvider
+class FavourableServiceProvider extends  AppParentServiceProvider
 {
     
     public function boot()
