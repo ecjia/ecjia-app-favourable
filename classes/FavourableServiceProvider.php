@@ -9,7 +9,7 @@ class FavourableServiceProvider extends  AppParentServiceProvider
     
     public function boot()
     {
-        $this->package('ecjia/app-favourable', null, dirname(__DIR__));
+        $this->package('ecjia/app-favourable');
     }
     
     public function register()
