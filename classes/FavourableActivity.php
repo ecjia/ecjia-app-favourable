@@ -51,6 +51,7 @@ use RC_Time;
 use ecjia;
 use RC_Api;
 use RC_Logger;
+use ecjia_page;
 
 /**
  * 优惠活动
@@ -170,6 +171,69 @@ class FavourableActivity
 			$act_id = $parameter['act_id'];
 		}
 		return $act_id;
+    }
+    
+    /**
+     *  取得优惠活动列表
+     * @param array $filter
+     * @return array
+     */
+    public static function FavourableList($filter = array())
+    {
+    	$dbview = RC_DB::table('favourable_activity as fa')->leftJoin('store_franchisee as sf', RC_DB::raw('sf.store_id'), '=', RC_DB::raw('fa.store_id'));
+    	
+    	/* 过滤条件 */
+    	if (!empty($filter['keyword'])) {
+    		$dbview->whereRaw('(fa.act_name  like  "%'.mysql_like_quote($filter['keyword']).'%")');
+    	}
+    	$now = RC_Time::gmtime();
+    	if (isset($filter['is_going']) && $filter['is_going'] == 1) {
+    		$dbview->where(RC_DB::raw('fa.start_time'), '<=', $now)->where(RC_DB::raw('fa.end_time'), '>=', $now);
+    	}
+    	/* 正在进行中*/
+    	if (isset($filter['status']) && $filter['status'] == 'going') {
+    		$dbview->where(RC_DB::raw('fa.start_time'), '<=', $now)->where(RC_DB::raw('fa.end_time'), '>=', $now);
+    	}
+    	/* 即将开始*/
+    	if (isset($filter['status']) && $filter['status'] == 'coming') {
+    		$dbview->where(RC_dB::raw('fa.start_time'), '>=', $now);
+    	}
+    	/* 已结束*/
+    	if (isset($filter['status']) && $filter['status'] == 'finished') {
+    		$dbview->where(RC_DB::raw('fa.end_time'), '<=', $now);
+    	}
+    
+    	/* 卖家*/
+    	if (!empty($filter['store_id'])) {
+    		$dbview->where(RC_DB::raw('fa.store_id'), $filter['store_id']);
+    	}
+    
+    	/* 排序*/
+    	$filter['sort_by']    = empty($filter['sort_by']) ? 'act_id' : trim($filter['sort_by']);
+    	$filter['sort_order'] = empty($filter['sort_order']) ? 'DESC' : trim($filter['sort_order']);
+    
+    	$join = null;
+    
+    	$count = $dbview->count(RC_DB::raw('fa.act_id'));
+    	//实例化分页
+    	$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
+    
+    	$res = $dbview
+    			->select(RC_DB::raw('fa.*', 'ssi.merchants_name'))
+    			->orderBy(RC_DB::raw($filter['sort_by']), $filter['sort_order'])
+    			->take($filter['size'])
+    			->skip($page_row->start_id-1)
+    			->get();
+    
+    	$list = array();
+    	if (!empty($res)) {
+    		foreach ($res as $row) {
+    			$row['start_time']  = RC_Time::local_date('Y-m-d H:i', $row['start_time']);
+    			$row['end_time']    = RC_Time::local_date('Y-m-d H:i', $row['end_time']);
+    			$list[] = $row;
+    		}
+    	}
+    	return array('item' => $list, 'page' => $page_row);
     }
     
 }
