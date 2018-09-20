@@ -68,7 +68,8 @@ class admin_favourable_info_module extends api_admin implements api_interface {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		
-		$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
+		//$result = RC_Model::Model('favourable/favourable_activity_model')->favourable_info($id);
+		$result = Ecjia\App\Favourable\FavourableActivity::FavourableInfo($id);
 		if (empty($result)) {
 		    return new ecjia_error('not_exists_info', '不存在的信息');
 		}

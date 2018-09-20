@@ -68,7 +68,9 @@ class admin_favourable_delete_module extends api_admin implements api_interface 
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 		
-		$favourable = RC_Model::model('favourable/favourable_activity_model')->favourable_info($id);
+		//$favourable = RC_Model::model('favourable/favourable_activity_model')->favourable_info($id);
+		$favourable = Ecjia\App\Favourable\FavourableActivity::FavourableInfo($id);
+		
 		if (empty($favourable)) {
 			return new ecjia_error('not_exists_info', '不存在的信息');
 		}
@@ -88,7 +90,8 @@ class admin_favourable_delete_module extends api_admin implements api_interface 
 			$act_type = '享受价格折扣';
 		}
 		
-		$result = RC_Model::model('favourable/favourable_activity_model')->favourable_remove($id);
+		//$result = RC_Model::model('favourable/favourable_activity_model')->favourable_remove($id);
+		$result = Ecjia\App\Favourable\FavourableActivity::FavourableRemove($id);
 		if ($_SESSION['store_id'] > 0) {
 // 		    ecjia_merchant::admin_log($name.'，'.'优惠活动方式是 '.$act_type.'【来源掌柜】', 'remove', 'favourable');
 		    RC_Api::api('merchant', 'admin_log', array('text'=>$name.'，'.'优惠活动方式是 '.$act_type.'【来源掌柜】', 'action'=>'remove', 'object'=>'favourable'));
