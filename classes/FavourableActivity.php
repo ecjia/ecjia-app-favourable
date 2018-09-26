@@ -52,6 +52,7 @@ use ecjia;
 use RC_Api;
 use RC_Logger;
 use ecjia_page;
+use RC_Lang;
 
 /**
  * 优惠活动
