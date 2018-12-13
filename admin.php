@@ -141,7 +141,7 @@ class admin extends ecjia_admin {
 		
 		$id         = intval($_GET['act_id']);
 		//$favourable = $this->db_favourable_activity->favourable_info($id);
-		$favourable = Ecjia\App\Favourable\FavourableActivity::FavourableInfo($favourable);
+		$favourable = Ecjia\App\Favourable\FavourableActivity::FavourableInfo($id);
 		if (empty($favourable)) {
 			return $this->showmessage(RC_Lang::get('favourable::favourable.favourable_not_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
