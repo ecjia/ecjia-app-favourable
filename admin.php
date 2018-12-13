@@ -377,7 +377,7 @@ class admin extends ecjia_admin {
 			foreach ($data as $row) {
 				$row['start_time']  = RC_Time::local_date('Y-m-d H:i', $row['start_time']);
 				$row['end_time']    = RC_Time::local_date('Y-m-d H:i', $row['end_time']);
-				$row['user_rank_name'] = '全部等级';
+				$row['user_rank_name'] = '未设置';
 				if(!empty($row['user_rank'])) {
 				    $rank_arr = explode(',', $row['user_rank']);
 				    if($rank_arr) {
