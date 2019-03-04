@@ -101,7 +101,7 @@ HTML;
 
         $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
 
-        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'article'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'article'), $this->store_id);
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'favourable'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'favourable'), $this->store_id);
 
         ecjia_admin::admin_log($merchants_name, 'clean', 'store_favourable_activity');
     }
