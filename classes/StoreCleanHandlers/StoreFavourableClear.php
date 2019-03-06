@@ -49,7 +49,7 @@ class StoreFavourableClear extends StoreCleanAbstract
 
         return <<<HTML
 <span class="controls-info w300">{$text}</span>
-<span class="controls-info"><a href="{$url}" target="__blank">{$text_info}</a></span>
+<span class="controls-info"><a href="{$url}" target="_blank">{$text_info}</a></span>
 HTML;
     }
 
